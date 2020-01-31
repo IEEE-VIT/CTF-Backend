@@ -8,10 +8,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 // const {admin,database} = require("./utils/firebase")
 // const userRef = database.collection('Users').doc('hello')
-//         userRef.set({
-//             uid: 'user.uid',
-//             name: 'user.name',
-//             email: 'user.email',
+//         userRef.update({
+//             uid: 'user',
 //         })
 //         .then(( resp )=>{
 //             console.log(chalk.green("New user details saved in db"))
