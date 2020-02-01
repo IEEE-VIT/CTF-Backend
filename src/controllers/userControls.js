@@ -8,6 +8,18 @@ const createUser = (user)=>{
             uid: user.uid,
             name: user.name,
             email: user.email,
+            qAnswered: [],
+            points: 0,
+            hintsUsed:{
+                id_one:false,
+                id_two:false,
+                id_three:false,
+                id_four:false,
+                id_five:false,
+                id_sixth:false,
+                id_seventh:false,
+                id_eight:false
+            }
         })
         .then(( resp )=>{
             console.log(chalk.green("New user details saved in db"))
