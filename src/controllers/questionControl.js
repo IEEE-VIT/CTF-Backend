@@ -5,7 +5,31 @@ const chalk = require('chalk')
 //controller for creating a question
 const createQuestion = (ques) => {
     return new Promise((resolve, reject) => {
-
+        const quesRef = database.collection('Questions').doc(ques.uid)
+        quesRef.set({
+            uid: ques.uid,
+            name: ques.name,
+            description: ques.description,
+            hint: ques.hint
+        })
+            .then(() => {
+                console.log(chalk.green("New question added"))
+                resolve({
+                    statusCode: 200,
+                    payload: {
+                        msg: "Question Successfully Added"
+                    }
+                })
+            })
+            .catch((e) => {
+                console.log(chalk.red("Error in saving question details"))
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    },
+                })
+            })
     })
 }
 
@@ -19,7 +43,7 @@ const readQuestion = (ques) => {
 
 
 //controller for reading all the question
-const readAllQuestion = (ques) => {
+const readAllQuestion = () => {
     return new Promise((resolve, reject) => {
 
     })
