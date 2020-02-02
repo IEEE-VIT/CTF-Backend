@@ -4,14 +4,21 @@ const quesControl = require('../controllers/quesControls');
 
 //route for CREATE Question
 router.post('/tigerTeam/create', (req, res) => {
-    quesControl.createQuestion(req.body.quesName, req.body.url, req.body.description, req.body.hint)
+    quesControl.createQuestion({
+        name: req.body.quesName, 
+        url: req.body.url, 
+        description: req.body.description, 
+        hint: req.body.hint
+    })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
 
 //route for READ Question
 router.post('/tigerTeam/read', (req, res) => {
-    quesControl.readQuestion(req.body.uid)
+    quesControl.readQuestion({
+        uid: req.body.uid
+    })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
@@ -25,14 +32,22 @@ router.post('/tigerTeam/readAll', (req, res) => {
 
 //route for UPDATE Question
 router.post('/tigerTeam/update', (req, res) => {
-    quesControl.updateQuestion(req.body.uid, req.body.quesName, req.body.url, req.body.description, req.body.hint)
+    quesControl.updateQuestion({
+        uid: req.body.uid, 
+        name: req.body.quesName, 
+        url: req.body.url, 
+        description: req.body.description, 
+        hint: req.body.hint
+    })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
 
 //route for DELETE Question
 router.post('/tigerTeam/delete', (req, res) => {
-    quesControl.deleteQuestion(req.body.uid)
+    quesControl.deleteQuestion({
+        uid: req.body.uid
+    })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
