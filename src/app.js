@@ -13,10 +13,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Route imports
-const userRoute = require('./routes/user');
+const userRoute = require('./routes/userRoutes');
+const questionRoute = require('./routes/tigerTeamRoutes');
+
 
 //Use Routes
 app.use('/user',userRoute);
+app.use('/',questionRoute);
 
 const port = process.env.PORT
 app.listen(port,()=>{
