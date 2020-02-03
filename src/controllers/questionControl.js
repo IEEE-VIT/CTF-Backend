@@ -37,56 +37,57 @@ const createQuestion = (ques) => {
 //controller for reading a question
 const readQuestion = (ques) => {
     return new Promise((resolve, reject) => {
-        
+
         //                  WRITE CONTROLLER LOGIC HERE                // 
 
     })
-    .then(() => {
-        console.log(chalk.green("Question Read "))
-        resolve({
-            statusCode: 200,
-            payload: {
-                msg: "Question ready to be displayed"
-            }
+        .then(() => {
+            console.log(chalk.green("Question Read "))
+            resolve({
+                statusCode: 200,
+                payload: {
+                    msg: "Question ready to be displayed"
+                }
+            })
         })
-    })
-    .catch((e) => {
-        console.log(chalk.red("Error in Reading question details"))
-        reject({
-            statusCode: 400,
-            payload: {
-                msg: "Server Side error contact support"
-            },
+        .catch((e) => {
+            console.log(chalk.red("Error in Reading question details"))
+            reject({
+                statusCode: 400,
+                payload: {
+                    msg: "Server Side error contact support"
+                },
+            })
         })
-    })
 }
 
 
 //controller for reading all the question
 const readAllQuestion = () => {
     return new Promise((resolve, reject) => {
-
         //                  WRITE CONTROLLER LOGIC HERE                //
-
+        const questionRef = database.collection('Questions').doc('question');
+        questionRef.get()
     })
-    .then(() => {
-        console.log(chalk.green("All Question Read"))
-        resolve({
-            statusCode: 200,
-            payload: {
-                msg: "All Question Successfully Read"
-            }
+        .then((doc) => {
+            console.log(chalk.green("All Question Read"))
+            resolve({
+                statusCode: 200,
+                payload: {
+                    msg: "All Question Successfully Read",
+                    question: doc
+                }
+            })
         })
-    })
-    .catch((e) => {
-        console.log(chalk.red("Error in Reading all the question details"))
-        reject({
-            statusCode: 400,
-            payload: {
-                msg: "Server Side error contact support"
-            },
+        .catch((e) => {
+            console.log(chalk.red("Error in Reading all the question details"))
+            reject({
+                statusCode: 400,
+                payload: {
+                    msg: "Server Side error contact support"
+                },
+            })
         })
-    })
 }
 
 
@@ -97,24 +98,24 @@ const updateQuestion = (ques) => {
         //                  WRITE CONTROLLER LOGIC HERE                //
 
     })
-    .then(() => {
-        console.log(chalk.green("New question Update"))
-        resolve({
-            statusCode: 200,
-            payload: {
-                msg: "Question Successfully Updated"
-            }
+        .then(() => {
+            console.log(chalk.green("New question Update"))
+            resolve({
+                statusCode: 200,
+                payload: {
+                    msg: "Question Successfully Updated"
+                }
+            })
         })
-    })
-    .catch((e) => {
-        console.log(chalk.red("Error in Updating question details"))
-        reject({
-            statusCode: 400,
-            payload: {
-                msg: "Server Side error contact support"
-            },
+        .catch((e) => {
+            console.log(chalk.red("Error in Updating question details"))
+            reject({
+                statusCode: 400,
+                payload: {
+                    msg: "Server Side error contact support"
+                },
+            })
         })
-    })
 }
 
 
@@ -125,24 +126,24 @@ const deleteQuestion = (ques) => {
         //                  WRITE CONTROLLER LOGIC HERE                //
 
     })
-    .then(() => {
-        console.log(chalk.green("Question Deleted"))
-        resolve({
-            statusCode: 200,
-            payload: {
-                msg: "Question Successfully Deleted"
-            }
+        .then(() => {
+            console.log(chalk.green("Question Deleted"))
+            resolve({
+                statusCode: 200,
+                payload: {
+                    msg: "Question Successfully Deleted"
+                }
+            })
         })
-    })
-    .catch((e) => {
-        console.log(chalk.red("Error in Deleting question details"))
-        reject({
-            statusCode: 400,
-            payload: {
-                msg: "Server Side error contact support"
-            },
+        .catch((e) => {
+            console.log(chalk.red("Error in Deleting question details"))
+            reject({
+                statusCode: 400,
+                payload: {
+                    msg: "Server Side error contact support"
+                },
+            })
         })
-    })
 }
 
 
