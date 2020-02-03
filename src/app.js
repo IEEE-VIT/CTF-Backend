@@ -19,7 +19,7 @@ const questionRoute = require('./routes/tigerTeamRoutes');
 
 //Use Routes
 app.use('/user',userRoute);
-app.use('/',questionRoute);
+app.use('/tigerTeam',questionRoute);
 
 const port = process.env.PORT
 app.listen(port,()=>{

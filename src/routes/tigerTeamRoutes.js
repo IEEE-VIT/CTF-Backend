@@ -3,7 +3,7 @@ const quesControl = require('../controllers/questionControl');
 // const quesCreate = require('../middlewares/question/question')
 
 //route for CREATE Question
-router.post('/tigerTeam/create', (req, res) => {
+router.post('/create', (req, res) => {
     quesControl.createQuestion({
         name: req.body.quesName, 
         url: req.body.url, 
@@ -15,7 +15,7 @@ router.post('/tigerTeam/create', (req, res) => {
 })
 
 //route for READ Question
-router.get('/tigerTeam/read', (req, res) => {
+router.get('/read', (req, res) => {
     quesControl.readQuestion({
         name: req.body.name
     })
@@ -24,14 +24,14 @@ router.get('/tigerTeam/read', (req, res) => {
 })
 
 //route for ALL READ Question
-router.get('/tigerTeam/readAll', (req, res) => {
+router.get('/readAll', (req, res) => {
     quesControl.readAllQuestion()
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
 
 //route for UPDATE Question
-router.patch('/tigerTeam/update', (req, res) => {
+router.patch('/update', (req, res) => {
     quesControl.updateQuestion({
         id: req.body.id, 
         name: req.body.quesName, 
@@ -44,7 +44,7 @@ router.patch('/tigerTeam/update', (req, res) => {
 })
 
 //route for DELETE Question
-router.delete('/tigerTeam/delete', (req, res) => {
+router.delete('/delete', (req, res) => {
     quesControl.deleteQuestion({
         id: req.body.id
     })
