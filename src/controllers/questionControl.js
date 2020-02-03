@@ -9,11 +9,11 @@ const createQuestion = (ques) => {
         const quesID = uniqid()
         const quesRef = database.collection('Questions').doc(quesID)
         await quesRef.set({
-            id: quesID,
-            name: ques.name,
-            description: ques.description,
-            hint: ques.hint,
-            url: ques.url
+            "id": quesID,
+            "name": ques.name,
+            "description": ques.description,
+            "hint": ques.hint,
+            "url": ques.url
         })
             .then(() => {
                 console.log(chalk.green("New question added"))
