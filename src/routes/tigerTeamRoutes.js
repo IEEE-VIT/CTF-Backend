@@ -15,7 +15,7 @@ router.post('/tigerTeam/create', (req, res) => {
 })
 
 //route for READ Question
-router.post('/tigerTeam/read', (req, res) => {
+router.get('/tigerTeam/read', (req, res) => {
     quesControl.readQuestion({
         name: req.body.name
     })
@@ -24,14 +24,14 @@ router.post('/tigerTeam/read', (req, res) => {
 })
 
 //route for ALL READ Question
-router.post('/tigerTeam/readAll', (req, res) => {
+router.get('/tigerTeam/readAll', (req, res) => {
     quesControl.readAllQuestion()
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
 
 //route for UPDATE Question
-router.post('/tigerTeam/update', (req, res) => {
+router.patch('/tigerTeam/update', (req, res) => {
     quesControl.updateQuestion({
         id: req.body.id, 
         name: req.body.quesName, 
@@ -44,7 +44,7 @@ router.post('/tigerTeam/update', (req, res) => {
 })
 
 //route for DELETE Question
-router.post('/tigerTeam/delete', (req, res) => {
+router.delete('/tigerTeam/delete', (req, res) => {
     quesControl.deleteQuestion({
         id: req.body.id
     })
