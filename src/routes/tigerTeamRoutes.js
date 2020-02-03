@@ -17,7 +17,7 @@ router.post('/create', (req, res) => {
 //route for READ Question
 router.get('/read', (req, res) => {
     quesControl.readQuestion({
-        name: req.body.name
+        id: req.body.id
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
