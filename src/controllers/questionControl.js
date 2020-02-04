@@ -1,21 +1,32 @@
 const { admin, database } = require('../utils/firebase')
 const chalk = require('chalk')
 const uniqid = require('uniqid')
+const bcrypt = require('bcrypt')
+
 
 //controller for creating a question
 //DONE
 const createQuestion = (ques) => {
     return new Promise(async (resolve, reject) => {
         const quesID = uniqid()
+        const saltRounds = 10;
+        const flag = ques.flag
+        var salt = bcrypt.genSaltSync(saltRounds);
+        var cryptFlag = bcrypt.hashSync(flag, salt);
         const quesRef = database.collection('Questions').doc(quesID)
+        const hintRef = database.collection('Hints').doc(quesID)
         await quesRef.set({
             "id": quesID,
             "name": ques.name,
             "description": ques.description,
             "hint": ques.hint,
-            "url": ques.url
+            "url": ques.url,
+            "flag": cryptFlag
         })
-            .then(() => {
+            .then(async () => {
+                await hintRef.set({})
+            })
+            .then(async () => {
                 console.log(chalk.green("New question added"))
                 resolve({
                     statusCode: 200,
@@ -137,7 +148,9 @@ const updateQuestion = (ques) => {
 const deleteQuestion = (ques) => {
     return new Promise(async (resolve, reject) => {
         const quesRef = database.collection('Questions').doc(ques.id)
+        const hintRef = database.collection('Hints').doc(ques.id)
         await quesRef.delete()
+        await hintRef.delete()
             .then(() => {
                 console.log(chalk.green("Question Deleted"))
                 resolve({
@@ -158,9 +171,6 @@ const deleteQuestion = (ques) => {
             })
     })
 }
-
-
-
 
 module.exports = {
     createQuestion,

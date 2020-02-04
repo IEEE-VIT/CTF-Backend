@@ -8,7 +8,8 @@ router.post('/create', (req, res) => {
         name: req.body.quesName, 
         url: req.body.url, 
         description: req.body.description, 
-        hint: req.body.hint
+        hint: req.body.hint,
+        flag: req.body.flag
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
@@ -37,7 +38,8 @@ router.patch('/update', (req, res) => {
         name: req.body.quesName, 
         url: req.body.url, 
         description: req.body.description, 
-        hint: req.body.hint
+        hint: req.body.hint,
+        flag: req.body.flag
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
