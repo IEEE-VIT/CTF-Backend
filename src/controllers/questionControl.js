@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt')
 
 
 //controller for creating a question
-//DONE
 const createQuestion = (ques) => {
     return new Promise(async (resolve, reject) => {
         const quesID = uniqid()
@@ -49,7 +48,6 @@ const createQuestion = (ques) => {
 
 
 //controller for reading a question
-//DONE
 const readQuestion = (ques) => {
     return new Promise((resolve, reject) => {
         const quesRef = database.collection('Questions').doc(ques.id)
@@ -78,7 +76,6 @@ const readQuestion = (ques) => {
 
 
 //controller for reading all the question
-//DONE
 const readAllQuestion = () => {
     return new Promise(async (resolve, reject) => {
         const questionRef = database.collection('Questions')
@@ -116,7 +113,6 @@ const readAllQuestion = () => {
 
 
 //controller for updating a question
-//DONE
 const updateQuestion = (ques) => {
     return new Promise(async (resolve, reject) => {
         const quesRef = database.collection('Questions').doc(ques.id)
@@ -144,7 +140,6 @@ const updateQuestion = (ques) => {
 
 
 //controller for deleting a question
-//DONE
 const deleteQuestion = (ques) => {
     return new Promise(async (resolve, reject) => {
         const quesRef = database.collection('Questions').doc(ques.id)

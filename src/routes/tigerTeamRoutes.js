@@ -1,12 +1,12 @@
 const router = require("express")();
 const quesControl = require('../controllers/questionControl');
-// const quesCreate = require('../middlewares/question/question')
+const quesValidator = require('../middlewares/question/quesValidator')
 const tigerTeamAuth = require('../middlewares/question/tigerTeamAuth');
 
 //route for CREATE Question
-router.post('/create', tigerTeamAuth, (req, res) => {
+router.post('/create', [tigerTeamAuth, quesValidator], (req, res) => {
     quesControl.createQuestion({
-        name: req.body.quesName, 
+        name: req.body.name, 
         url: req.body.url, 
         description: req.body.description, 
         hint: req.body.hint,
@@ -33,10 +33,10 @@ router.get('/readAll',tigerTeamAuth, (req, res) => {
 })
 
 //route for UPDATE Question
-router.patch('/update',tigerTeamAuth, (req, res) => {
+router.patch('/update',[tigerTeamAuth, quesValidator], (req, res) => {
     quesControl.updateQuestion({
         id: req.body.id, 
-        name: req.body.quesName, 
+        name: req.body.name, 
         url: req.body.url, 
         description: req.body.description, 
         hint: req.body.hint,

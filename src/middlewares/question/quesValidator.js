@@ -1,4 +1,5 @@
 const validator = require('validator')
+const chalk = require('chalk')
 
 const quesValidator = (req, res, next) => {
     //store all the parameters of the request in constants
@@ -22,13 +23,13 @@ const quesValidator = (req, res, next) => {
     }
 
     //Check on hint
-    if(){
-        errorList.push('')
+    if((hint.lenght > 20)){
+        errorList.push('Hint length should be less than 20 character!')
     }
 
     //Check on flag
-    if(){
-        errorList.push('')
+    if((flag.match(/(^CTF\{[A-Z0-9!@#$%^&*_+=-]{5,20}\}$)/gi) == null)){
+        errorList.push('Flag needs to be of the type CTF{I_am_a_FLAG}')
     }
 
     if (errorList.length !== 0) {
@@ -49,6 +50,7 @@ const quesValidator = (req, res, next) => {
             flag
         }
         req.quesData = quesData
+        console.log(chalk.green("Validation Check Complete\nNo Issues Found\n"))
         next()
     }
 
