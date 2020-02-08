@@ -1,6 +1,6 @@
 const router = require("express")();
 const userControls = require('../controllers/userControls');
-const userCreate = require('../middlewares/user/userCreate')
+const userCreate = require('../middlewares/user/userCreateMiddleware')
 
 router.post('/create',userCreate,(req,res)=>{
     userControls.createUser(req.user)
