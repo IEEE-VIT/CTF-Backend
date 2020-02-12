@@ -13,7 +13,6 @@ const createQuestion = (ques) => {
         var salt = bcrypt.genSaltSync(saltRounds);
         var cryptFlag = bcrypt.hashSync(flag, salt);
         const quesRef = database.collection('Questions').doc(quesID)
-        const hintRef = database.collection('Hints').doc(quesID)
         await quesRef.set({
             "id": quesID,
             "name": ques.name,
@@ -22,9 +21,6 @@ const createQuestion = (ques) => {
             "url": ques.url,
             "flag": cryptFlag
         })
-            .then(async () => {
-                await hintRef.set({})
-            })
             .then(async () => {
                 console.log(chalk.green("New question added"))
                 resolve({
@@ -143,9 +139,7 @@ const updateQuestion = (ques) => {
 const deleteQuestion = (ques) => {
     return new Promise(async (resolve, reject) => {
         const quesRef = database.collection('Questions').doc(ques.id)
-        const hintRef = database.collection('Hints').doc(ques.id)
         await quesRef.delete()
-        await hintRef.delete()
             .then(() => {
                 console.log(chalk.green("Question Deleted"))
                 resolve({
