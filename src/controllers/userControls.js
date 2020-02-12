@@ -11,16 +11,7 @@ const createUser = (user) => {
             email: user.email,
             qAnswered: [],
             points: 0,
-            hintsUsed: {
-                id_one: false,
-                id_two: false,
-                id_three: false,
-                id_four: false,
-                id_five: false,
-                id_sixth: false,
-                id_seventh: false,
-                id_eight: false
-            }
+            hintsUsed: []
         })
             .then((resp) => {
                 console.log(chalk.green("New user details saved in db"))
@@ -142,9 +133,37 @@ const checkAnswer = (uid, answer, questionId) => {
     })
 }
 
+const fetchHint = (questionID,uid) => {
+    return new Promise((resolve, reject) => {
+        console.log(chalk.yellow("Getting hint..."));
+        const questRef = database.collection('Questions').doc(questionID);
+        questRef.get()
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    questRef.onSnapshot((doc) => {
+                        console.log(chalk.yellow("Question exists, Updating user schema"));
+                        const userRef = database.collection('Users').doc(uid)
+                        userRef.update({
+                            hintsUsed: admin.firestore.FieldValue.arrayUnion(questionID)
+                        })
+                        console.log(chalk.green("User schema updated"))
+                        resolve({"hint":doc._fieldsProto.hint.stringValue})
+                    });
+                }
+                else {
+                    resolve(false)
+                }
+            }).catch((err) => {
+                console.log(chalk.red("Error in fetching question details!"));
+                reject(err)
+            })
+    })
+}
+
 module.exports = {
     createUser,
     checkUserUid,
     getUserInfo,
-    checkAnswer
+    checkAnswer,
+    fetchHint
 }
