@@ -160,10 +160,46 @@ const fetchHint = (questionID,uid) => {
     })
 }
 
+const readAllQuestion = () => {
+    return new Promise(async (resolve, reject) => {
+        const questionRef = database.collection('Questions')
+        await questionRef.get()
+            .then(snap => {
+                allQuestions = []
+                snap.forEach(doc => {
+                    const id = doc.id;
+                    const data = doc.data()
+                    allQuestions.push({
+                        id,
+                        data
+                    })
+                })
+                console.log(chalk.green("All question Retrived"))
+                resolve({
+                    statusCode: 200,
+                    payload: {
+                        msg: "Question Successfully fetched",
+                        body: allQuestions
+                    }
+                })
+            })
+            .catch((e) => {
+                console.log(chalk.red("Error in Reading all the question details"))
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    },
+                })
+            })
+    })
+}
+
 module.exports = {
     createUser,
     checkUserUid,
     getUserInfo,
     checkAnswer,
-    fetchHint
+    fetchHint,
+    readAllQuestion
 }
