@@ -1,5 +1,6 @@
 const { admin, database } = require('../utils/firebase')
 const chalk = require('chalk')
+const bcrypt = require('bcrypt')
 
 const createUser = (user) => {
     return new Promise((resolve, reject) => {
@@ -84,8 +85,66 @@ const getUserInfo = (uid) => {
     })
 }
 
+const checkAnswer = (uid, answer, questionId) => {
+    return new Promise(async (resolve, reject) => {
+        const question = database.collection('Questions').doc(questionId)
+        question.get()
+            .then(async(doc) => {
+                //check if answer is right or not
+                if(bcrypt.compareSync(answer, doc.data().flag)) {
+                    //check if hint used or not
+                    const user = database.collection('Users').doc(uid)
+                    await user.get()
+                        .then(snap => {
+                            snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
+                                if(value.stringValue === questionId) {
+                                    const updatePoints = user.update({
+                                        points: admin.firestore.FieldValue.increment(100)
+                                    })
+                                    resolve({
+                                        statusCode: 200,
+                                        payload: {
+                                            msg: "Answer correct",
+                                            hintUsed: false
+                                        }
+                                    })
+                                } else {
+                                    const updatePoints = user.update({
+                                        points: admin.firestore.FieldValue.increment(50)
+                                    })
+                                    resolve({
+                                        statusCode: 200,
+                                        payload: {
+                                            msg: "Answer correct",
+                                            hintUsed: true
+                                        }
+                                    })
+                                }
+                            });
+                        })
+                } else {
+                    resolve({
+                        statusCode: 200,
+                        payload: {
+                            msg: "Answer incorrect"
+                        }
+                    })
+                }
+            }).catch((e) => {
+                console.log(e)
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Answer not verified"
+                    },
+                })
+            })
+    })
+}
+
 module.exports = {
     createUser,
     checkUserUid,
-    getUserInfo
+    getUserInfo,
+    checkAnswer
 }
