@@ -168,10 +168,14 @@ const readAllQuestion = () => {
                 allQuestions = []
                 snap.forEach(doc => {
                     const id = doc.id;
-                    const data = doc.data()
+                    const name = doc.data().name;
+                    const description = doc.data().description;
+                    const url = doc.data().url;
                     allQuestions.push({
                         id,
-                        data
+                        name,
+                        description,
+                        url
                     })
                 })
                 console.log(chalk.green("All question Retrived"))
