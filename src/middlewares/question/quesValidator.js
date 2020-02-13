@@ -8,6 +8,8 @@ const quesValidator = (req, res, next) => {
     const description = req.body.description.trim()
     const hint = req.body.hint.trim()
     const flag = req.body.flag.trim()
+    const latitude = req.body.latitude.trim()
+    const longitude = req.body.longitude.trim()
 
     //Array to store all the errors
     const errorList = []
@@ -47,7 +49,9 @@ const quesValidator = (req, res, next) => {
             url,
             description,
             hint,
-            flag
+            flag,
+            latitude,
+            longitude
         }
         req.quesData = quesData
         console.log(chalk.green("Validation Check Complete\nNo Issues Found\n"))
