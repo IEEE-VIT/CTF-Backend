@@ -171,11 +171,15 @@ const readAllQuestion = () => {
                     const name = doc.data().name;
                     const description = doc.data().description;
                     const url = doc.data().url;
+                    const latitude = doc.data().latitude;
+                    const longitude = doc.data().longitude;
                     allQuestions.push({
                         id,
                         name,
                         description,
-                        url
+                        url,
+                        latitude,
+                        longitude
                     })
                 })
                 console.log(chalk.green("All question Retrived"))
