@@ -47,7 +47,27 @@ const checkUserUid = (uid) => {
                 resolve(resp)
             })
             .catch((err) => {
-                console.log(chalk.red("User uid un-verified!"))
+                console.log(chalk.red("User uid un-verified from authentication!"))
+                reject({ error: err.message, message: "Unauthorised" })
+            })
+    })
+}
+
+const checkUserObject = (uid, resp) => {
+    return new Promise(async (resolve, reject) => {
+        console.log("Entered checkUserObject")
+        const userRef = await database.collection('Users').doc(uid)
+        console.log("wait")
+        userRef.get()
+            .then((docSnapshot) => {
+                console.log("got docSnapshot")
+                if(docSnapshot.exists) {
+                    console.log(docSnapshot.exists)
+                    resolve(resp)
+                }
+            })
+            .catch((err) => {
+                console.log(chalk.red("User uid un-verified from database!"))
                 reject({ error: err.message, message: "Unauthorised" })
             })
     })
@@ -209,5 +229,6 @@ module.exports = {
     getUserInfo,
     checkAnswer,
     fetchHint,
-    readAllQuestion
+    readAllQuestion,
+    checkUserObject
 }
