@@ -61,14 +61,24 @@ const checkUserObject = (uid, resp) => {
         userRef.get()
             .then((docSnapshot) => {
                 console.log("got docSnapshot")
-                if(docSnapshot.exists) {
+                if (docSnapshot.exists) {
                     console.log(docSnapshot.exists)
-                    resolve(resp)
+                    resolve({
+                        statusCode: 200,
+                        payload: {
+                            msg: "User Checked",
+                            responce: resp
+                        }
+                    })
                 }
             })
             .catch((err) => {
                 console.log(chalk.red("User uid un-verified from database!"))
-                reject({ error: err.message, message: "Unauthorised" })
+                reject({ 
+                    statusCode: 400,
+                    error: err.message, 
+                    message: "Unauthorised" 
+                })
             })
     })
 }
@@ -82,16 +92,33 @@ const getUserInfo = (uid) => {
                 if (docSnapshot.exists) {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
-                        console.log(doc._fieldsProto)
-                        resolve(true)
+                        //console.log(doc._fieldsProto)
+                        resolve({
+                            statusCode: 200,
+                            payload: {
+                                msg: "User Info Featched and ready to be displayed",
+                            }
+                        })
                     });
                 }
                 else {
-                    resolve(false)
+                    reject({
+                        statusCode: 400,
+                        payload: {
+                            msg: "User Doesnot Exist, Server Side Error",
+                            error: err
+                        }
+                    })
                 }
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching user details!"));
-                reject(err)
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support",
+                        error: err
+                    }
+                })
             })
     })
 }
@@ -100,15 +127,15 @@ const checkAnswer = (uid, answer, questionId) => {
     return new Promise(async (resolve, reject) => {
         const question = database.collection('Questions').doc(questionId)
         question.get()
-            .then(async(doc) => {
+            .then(async (doc) => {
                 //check if answer is right or not
-                if(bcrypt.compareSync(answer, doc.data().flag)) {
+                if (bcrypt.compareSync(answer, doc.data().flag)) {
                     //check if hint used or not
                     const user = database.collection('Users').doc(uid)
                     await user.get()
                         .then(snap => {
                             snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
-                                if(value.stringValue === questionId) {
+                                if (value.stringValue === questionId) {
                                     const updatePoints = user.update({
                                         points: admin.firestore.FieldValue.increment(100)
                                     })
@@ -153,7 +180,7 @@ const checkAnswer = (uid, answer, questionId) => {
     })
 }
 
-const fetchHint = (questionID,uid) => {
+const fetchHint = (questionID, uid) => {
     return new Promise((resolve, reject) => {
         console.log(chalk.yellow("Getting hint..."));
         const questRef = database.collection('Questions').doc(questionID);
@@ -167,7 +194,7 @@ const fetchHint = (questionID,uid) => {
                             hintsUsed: admin.firestore.FieldValue.arrayUnion(questionID)
                         })
                         console.log(chalk.green("User schema updated"))
-                        resolve({"hint":doc._fieldsProto.hint.stringValue})
+                        resolve({ "hint": doc._fieldsProto.hint.stringValue })
                     });
                 }
                 else {
@@ -223,6 +250,44 @@ const readAllQuestion = () => {
     })
 }
 
+const showProfile = (user) => {
+    return new Promise(async (resolve, reject) => {
+        console.log(chalk.yellow("Getting user Profile..."))
+        const userRef = database.collection('Users').doc(user.uid)
+        userRef.get()
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    userRef.onSnapshot((doc) => {
+                        console.log(chalk.green("User exists!"));
+                        const profile = {
+                            "uid":doc._fieldsProto.uid.stringValue,
+                            "points":doc._fieldsProto.points.integerValue,
+                            "name":doc._fieldsProto.name.stringValue,
+                            "email":doc._fieldsProto.email.stringValue
+                        }
+                        console.log(profile)
+                        resolve({
+                            statusCode: 200,
+                            payload: {
+                                msg: "Profile ready to be displayed",
+                                userProfile: profile
+                            }
+                        })
+                    });
+                }
+            }).catch((err) => {
+                console.log(chalk.red("Error in fetching user details!"));
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support",
+                        error: err
+                    }
+                })
+            })
+    })
+}
+
 module.exports = {
     createUser,
     checkUserUid,
@@ -230,5 +295,6 @@ module.exports = {
     checkAnswer,
     fetchHint,
     readAllQuestion,
-    checkUserObject
+    checkUserObject,
+    showProfile
 }
