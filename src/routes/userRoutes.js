@@ -40,8 +40,10 @@ router.get('/getAllQuestions',[userAuth],(req,res)=>{
 
 
 //route to show the user profile
-router.get('/pofile',[userAuth], (req,res) => {
-    userControls.showProfile(req.body)
+router.get('/profile', [userAuth], (req,res) => {
+    userControls.showProfile({
+        "uid" : req.body.uid
+    })
     .then(resp => res.status(200).send(resp))
     .catch(err => res.status(400).send(err))
 })
