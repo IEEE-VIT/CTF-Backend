@@ -74,10 +74,10 @@ const checkUserObject = (uid, resp) => {
             })
             .catch((err) => {
                 console.log(chalk.red("User uid un-verified from database!"))
-                reject({ 
+                reject({
                     statusCode: 400,
-                    error: err.message, 
-                    message: "Unauthorised" 
+                    error: err.message,
+                    message: "Unauthorised"
                 })
             })
     })
@@ -238,13 +238,13 @@ const readAllQuestion = () => {
                     }
                 })
             })
-            .catch((e) => {
+            .catch((err) => {
                 console.log(chalk.red("Error in Reading all the question details"))
                 reject({
                     statusCode: 400,
                     payload: {
                         msg: "Server Side error contact support"
-                    },
+                    }
                 })
             })
     })
@@ -254,18 +254,18 @@ const showProfile = (user) => {
     return new Promise(async (resolve, reject) => {
         console.log(chalk.yellow("Getting user Profile..."))
         const userRef = database.collection('Users').doc(user.uid)
-        userRef.get()
+        await userRef.get()
             .then((docSnapshot) => {
                 if (docSnapshot.exists) {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
                         const profile = {
-                            "uid":doc._fieldsProto.uid.stringValue,
-                            "points":doc._fieldsProto.points.integerValue,
-                            "name":doc._fieldsProto.name.stringValue,
-                            "email":doc._fieldsProto.email.stringValue
+                            "uid": doc._fieldsProto.uid.stringValue,
+                            "points": doc._fieldsProto.points.integerValue,
+                            "name": doc._fieldsProto.name.stringValue,
+                            "email": doc._fieldsProto.email.stringValue
                         }
-                        console.log(profile)
+                        // console.log(profile)
                         resolve({
                             statusCode: 200,
                             payload: {
@@ -280,9 +280,33 @@ const showProfile = (user) => {
                 reject({
                     statusCode: 400,
                     payload: {
-                        msg: "Server Side error contact support",
-                        error: err
+                        msg: "Server Side error contact support"
                     }
+                })
+            })
+    })
+}
+
+const updateProfile = (user) => {
+    return new Promise(async (resolve, reject) => {
+        const userRef = database.collection('Users').doc(user.uid)
+        await userRef.update(user)
+            .then(() => {
+                console.log(chalk.green("User Update"))
+                resolve({
+                    statusCode: 200,
+                    payload: {
+                        msg: "User Name Successfully Updated"
+                    }
+                })
+            })
+            .catch((e) => {
+                console.log(chalk.red("Error in Updating User details"))
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    },
                 })
             })
     })
@@ -296,5 +320,6 @@ module.exports = {
     fetchHint,
     readAllQuestion,
     checkUserObject,
-    showProfile
+    showProfile,
+    updateProfile
 }
