@@ -1,5 +1,6 @@
 const { admin, database } = require('../utils/firebase')
 const chalk = require('chalk')
+const bcrypt = require('bcrypt')
 
 const createUser = (user) => {
     return new Promise((resolve, reject) => {
@@ -46,8 +47,38 @@ const checkUserUid = (uid) => {
                 resolve(resp)
             })
             .catch((err) => {
-                console.log(chalk.red("User uid un-verified!"))
+                console.log(chalk.red("User uid un-verified from authentication!"))
                 reject({ error: err.message, message: "Unauthorised" })
+            })
+    })
+}
+
+const checkUserObject = (uid, resp) => {
+    return new Promise(async (resolve, reject) => {
+        console.log("Entered checkUserObject")
+        const userRef = await database.collection('Users').doc(uid)
+        console.log("wait")
+        userRef.get()
+            .then((docSnapshot) => {
+                console.log("got docSnapshot")
+                if (docSnapshot.exists) {
+                    console.log(docSnapshot.exists)
+                    resolve({
+                        statusCode: 200,
+                        payload: {
+                            msg: "User Checked",
+                            responce: resp
+                        }
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log(chalk.red("User uid un-verified from database!"))
+                reject({
+                    statusCode: 400,
+                    error: err.message,
+                    message: "Unauthorised"
+                })
             })
     })
 }
@@ -61,21 +92,95 @@ const getUserInfo = (uid) => {
                 if (docSnapshot.exists) {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
-                        console.log(doc._fieldsProto)
-                        resolve(true)
+                        //console.log(doc._fieldsProto)
+                        resolve({
+                            statusCode: 200,
+                            payload: {
+                                msg: "User Info Featched and ready to be displayed",
+                            }
+                        })
                     });
                 }
                 else {
-                    resolve(false)
+                    reject({
+                        statusCode: 400,
+                        payload: {
+                            msg: "User Doesnot Exist, Server Side Error",
+                            error: err
+                        }
+                    })
                 }
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching user details!"));
-                reject(err)
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support",
+                        error: err
+                    }
+                })
             })
     })
 }
 
-const fetchHint = (questionID,uid) => {
+const checkAnswer = (uid, answer, questionId) => {
+    return new Promise(async (resolve, reject) => {
+        const question = database.collection('Questions').doc(questionId)
+        question.get()
+            .then(async (doc) => {
+                //check if answer is right or not
+                if (bcrypt.compareSync(answer, doc.data().flag)) {
+                    //check if hint used or not
+                    const user = database.collection('Users').doc(uid)
+                    await user.get()
+                        .then(snap => {
+                            snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
+                                if (value.stringValue === questionId) {
+                                    const updatePoints = user.update({
+                                        points: admin.firestore.FieldValue.increment(100)
+                                    })
+                                    resolve({
+                                        statusCode: 200,
+                                        payload: {
+                                            msg: "Answer correct",
+                                            hintUsed: false
+                                        }
+                                    })
+                                } else {
+                                    const updatePoints = user.update({
+                                        points: admin.firestore.FieldValue.increment(50)
+                                    })
+                                    resolve({
+                                        statusCode: 200,
+                                        payload: {
+                                            msg: "Answer correct",
+                                            hintUsed: true
+                                        }
+                                    })
+                                }
+                            });
+                        })
+                } else {
+                    resolve({
+                        statusCode: 200,
+                        payload: {
+                            msg: "Answer incorrect"
+                        }
+                    })
+                }
+            }).catch((e) => {
+                console.log(e)
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Answer not verified"
+                    },
+                })
+            })
+    })
+}
+
+const fetchHint = (questionID, uid) => {
     return new Promise((resolve, reject) => {
         console.log(chalk.yellow("Getting hint..."));
         const questRef = database.collection('Questions').doc(questionID);
@@ -89,7 +194,7 @@ const fetchHint = (questionID,uid) => {
                             hintsUsed: admin.firestore.FieldValue.arrayUnion(questionID)
                         })
                         console.log(chalk.green("User schema updated"))
-                        resolve({"hint":doc._fieldsProto.hint.stringValue})
+                        resolve({ "hint": doc._fieldsProto.hint.stringValue })
                     });
                 }
                 else {
@@ -102,9 +207,119 @@ const fetchHint = (questionID,uid) => {
     })
 }
 
+const readAllQuestion = () => {
+    return new Promise(async (resolve, reject) => {
+        const questionRef = database.collection('Questions')
+        await questionRef.get()
+            .then(snap => {
+                allQuestions = []
+                snap.forEach(doc => {
+                    const id = doc.id;
+                    const name = doc.data().name;
+                    const description = doc.data().description;
+                    const url = doc.data().url;
+                    const latitude = doc.data().latitude;
+                    const longitude = doc.data().longitude;
+                    allQuestions.push({
+                        id,
+                        name,
+                        description,
+                        url,
+                        latitude,
+                        longitude
+                    })
+                })
+                console.log(chalk.green("All question Retrived"))
+                resolve({
+                    statusCode: 200,
+                    payload: {
+                        msg: "Question Successfully fetched",
+                        body: allQuestions
+                    }
+                })
+            })
+            .catch((err) => {
+                console.log(chalk.red("Error in Reading all the question details"))
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    }
+                })
+            })
+    })
+}
+
+const showProfile = (user) => {
+    return new Promise(async (resolve, reject) => {
+        console.log(chalk.yellow("Getting user Profile..."))
+        const userRef = database.collection('Users').doc(user.uid)
+        await userRef.get()
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    userRef.onSnapshot((doc) => {
+                        console.log(chalk.green("User exists!"));
+                        const profile = {
+                            "uid": doc._fieldsProto.uid.stringValue,
+                            "points": doc._fieldsProto.points.integerValue,
+                            "name": doc._fieldsProto.name.stringValue,
+                            "email": doc._fieldsProto.email.stringValue
+                        }
+                        // console.log(profile)
+                        resolve({
+                            statusCode: 200,
+                            payload: {
+                                msg: "Profile ready to be displayed",
+                                userProfile: profile
+                            }
+                        })
+                    });
+                }
+            }).catch((err) => {
+                console.log(chalk.red("Error in fetching user details!"));
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    }
+                })
+            })
+    })
+}
+
+const updateProfile = (user) => {
+    return new Promise(async (resolve, reject) => {
+        const userRef = database.collection('Users').doc(user.uid)
+        await userRef.update(user)
+            .then(() => {
+                console.log(chalk.green("User Update"))
+                resolve({
+                    statusCode: 200,
+                    payload: {
+                        msg: "User Name Successfully Updated"
+                    }
+                })
+            })
+            .catch((e) => {
+                console.log(chalk.red("Error in Updating User details"))
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    },
+                })
+            })
+    })
+}
+
 module.exports = {
     createUser,
     checkUserUid,
     getUserInfo,
-    fetchHint
+    checkAnswer,
+    fetchHint,
+    readAllQuestion,
+    checkUserObject,
+    showProfile,
+    updateProfile
 }

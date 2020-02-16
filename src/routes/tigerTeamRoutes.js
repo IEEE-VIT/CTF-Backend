@@ -10,7 +10,9 @@ router.post('/create', [tigerTeamAuth, quesValidator], (req, res) => {
         url: req.body.url, 
         description: req.body.description, 
         hint: req.body.hint,
-        flag: req.body.flag
+        flag: req.body.flag,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
@@ -40,7 +42,9 @@ router.patch('/update',[tigerTeamAuth, quesValidator], (req, res) => {
         url: req.body.url, 
         description: req.body.description, 
         hint: req.body.hint,
-        flag: req.body.flag
+        flag: req.body.flag,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
