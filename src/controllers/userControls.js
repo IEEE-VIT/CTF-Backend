@@ -92,33 +92,16 @@ const getUserInfo = (uid) => {
                 if (docSnapshot.exists) {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
-                        //console.log(doc._fieldsProto)
-                        resolve({
-                            statusCode: 200,
-                            payload: {
-                                msg: "User Info Featched and ready to be displayed",
-                            }
-                        })
+                        console.log(doc._fieldsProto)
+                        resolve(true)
                     });
                 }
                 else {
-                    reject({
-                        statusCode: 400,
-                        payload: {
-                            msg: "User Doesnot Exist, Server Side Error",
-                            error: err
-                        }
-                    })
+                    resolve(false)
                 }
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching user details!"));
-                reject({
-                    statusCode: 400,
-                    payload: {
-                        msg: "Server Side error contact support",
-                        error: err
-                    }
-                })
+                reject(err)
             })
     })
 }
