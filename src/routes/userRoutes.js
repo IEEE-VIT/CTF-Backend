@@ -4,7 +4,7 @@ const userCreate = require('../middlewares/user/userCreateMiddleware');
 const previouslySolved = require('../middlewares/universal/previouslySolved');
 const userAuth = require('../middlewares/user/userAuth');
 const capcha = require('../middlewares/user/capcha');
-
+const chalk = require('chalk')
 //route to create for a user
 router.post('/create',[userCreate],(req,res)=>{
     userControls.createUser(req.user)
@@ -59,4 +59,12 @@ router.get('/updateProfile', [userAuth], (req,res) => {
     .catch(err => res.status(400).send(err))
 })
 
-module.exports = router;
+
+router.post('/leaderboard' , (req,res) => {
+    console.log(chalk.yellow('Fetching Leaderboards...'))
+    userControls.getLeaderboard()
+    .then(resp => res.send(resp).status(200))
+    .catch(err => res.status(400).send(err))
+})
+
+module.exports=router;

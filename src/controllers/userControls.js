@@ -295,6 +295,47 @@ const updateProfile = (user) => {
     })
 }
 
+
+const getLeaderboard = () => {
+    return new Promise((resolve , reject) => {
+        const query = database.collection('Users').orderBy('points' , 'desc');
+        query.get().then(snapshot => {
+            if (snapshot.empty) {
+              console.log('No matching documents.');
+              return;
+            }
+            var data = []  
+            snapshot.forEach(doc => {
+              var obj = doc.data();
+              var leaderboard = {
+                  uid: obj.uid,
+                  points: obj.points,
+                  name: obj.name
+              }  
+              data.push(leaderboard);
+            });
+            console.log(data)
+            resolve({
+                statusCode: 200,
+                payload: {
+                    msg: "Leaderboards successfully fetched",
+                    data: data
+                }
+            })
+          })
+          .catch(err => {
+            console.log('Error getting documents', err);
+            reject({
+                statusCode: 400,
+                payload: {
+                    msg: "Server Side error contact support"
+                },
+            })
+          });
+    })
+}
+
+
 module.exports = {
     createUser,
     checkUserUid,
@@ -304,5 +345,6 @@ module.exports = {
     readAllQuestion,
     checkUserObject,
     showProfile,
-    updateProfile
+    updateProfile,
+    getLeaderboard
 }
