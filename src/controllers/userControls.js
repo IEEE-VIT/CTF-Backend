@@ -177,15 +177,32 @@ const fetchHint = (questionID, uid) => {
                             hintsUsed: admin.firestore.FieldValue.arrayUnion(questionID)
                         })
                         console.log(chalk.green("User schema updated"))
-                        resolve({ "hint": doc._fieldsProto.hint.stringValue })
-                    });
-                }
-                else {
-                    resolve(false)
+                        const hint = doc._fieldsProto.hint.stringValue
+                        resolve({
+                            statusCode: 200,
+                            payload: {
+                                msg: "Hint Available",
+                                hint: hint
+                            }
+                        })
+                    })
+                } else {
+                    reject({
+                        statusCode: 400,
+                        payload: {
+                            msg: "Question Not Found in DataBase!"
+                        }
+                    })
                 }
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching question details!"));
-                reject(err)
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side Error, Contact Support",
+                        Error: err
+                    }
+                })
             })
     })
 }
@@ -297,22 +314,22 @@ const updateProfile = (user) => {
 
 
 const getLeaderboard = () => {
-    return new Promise((resolve , reject) => {
-        const query = database.collection('Users').orderBy('points' , 'desc');
+    return new Promise((resolve, reject) => {
+        const query = database.collection('Users').orderBy('points', 'desc');
         query.get().then(snapshot => {
             if (snapshot.empty) {
-              console.log('No matching documents.');
-              return;
+                console.log('No matching documents.');
+                return;
             }
-            var data = []  
+            var data = []
             snapshot.forEach(doc => {
-              var obj = doc.data();
-              var leaderboard = {
-                  uid: obj.uid,
-                  points: obj.points,
-                  name: obj.name
-              }  
-              data.push(leaderboard);
+                var obj = doc.data();
+                var leaderboard = {
+                    uid: obj.uid,
+                    points: obj.points,
+                    name: obj.name
+                }
+                data.push(leaderboard);
             });
             console.log(data)
             resolve({
@@ -322,16 +339,16 @@ const getLeaderboard = () => {
                     data: data
                 }
             })
-          })
-          .catch(err => {
-            console.log('Error getting documents', err);
-            reject({
-                statusCode: 400,
-                payload: {
-                    msg: "Server Side error contact support"
-                },
-            })
-          });
+        })
+            .catch(err => {
+                console.log('Error getting documents', err);
+                reject({
+                    statusCode: 400,
+                    payload: {
+                        msg: "Server Side error contact support"
+                    },
+                })
+            });
     })
 }
 
