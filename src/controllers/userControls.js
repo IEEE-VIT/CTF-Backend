@@ -1,17 +1,22 @@
 const { admin, database } = require('../utils/firebase')
 const chalk = require('chalk')
 const bcrypt = require('bcrypt')
+const crypto = require("crypto");
 
 const createUser = (user) => {
     return new Promise((resolve, reject) => {
         const userRef = database.collection('Users').doc(user.uid)
+        const randomString = crypto.randomBytes(5).toString('hex')
+        const ctfName = `CTF-${randomString}`
         userRef.set({
             uid: user.uid,
             name: user.name,
             email: user.email,
+            userName: ctfName,
             qAnswered: [],
             points: 0,
-            hintsUsed: []
+            hintsUsed: [],
+            defaultName: true
         })
             .then((resp) => {
                 console.log(chalk.green("New user details saved in db"))
