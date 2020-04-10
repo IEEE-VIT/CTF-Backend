@@ -268,9 +268,10 @@ const showProfile = (user) => {
                             "uid": doc._fieldsProto.uid.stringValue,
                             "points": doc._fieldsProto.points.integerValue,
                             "name": doc._fieldsProto.name.stringValue,
-                            "email": doc._fieldsProto.email.stringValue
+                            "email": doc._fieldsProto.email.stringValue,
+                            // "defaultName": doc._fieldsProto.defaultName.booleanValue
                         }
-                        // console.log(profile)
+                        console.log(doc._fieldsProto)
                         resolve({
                             statusCode: 200,
                             payload: {
@@ -316,7 +317,6 @@ const updateProfile = (user) => {
             })
     })
 }
-
 
 const getLeaderboard = () => {
     return new Promise((resolve, reject) => {
