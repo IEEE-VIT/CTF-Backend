@@ -12,6 +12,12 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+router.get('/', (req, res) => {
+    res.send("Test successfull!")
+})
+
+
 //Route imports
 const userRoute = require('./routes/userRoutes');
 const questionRoute = require('./routes/tigerTeamRoutes');
@@ -20,6 +26,7 @@ const questionRoute = require('./routes/tigerTeamRoutes');
 //Use Routes
 app.use('/user',userRoute);
 app.use('/tigerTeam',questionRoute);
+
 
 const port = process.env.PORT
 app.listen(port,()=>{
