@@ -32,7 +32,7 @@ router.post('/hint', userAuth, (req, res) => {
 
 
 //route to get all questions on the globe
-router.get('/getAllQuestions', [userAuth], (req, res) => {
+router.post('/getAllQuestions', [userAuth], (req, res) => {
     userControls.readAllQuestion()
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
@@ -40,7 +40,7 @@ router.get('/getAllQuestions', [userAuth], (req, res) => {
 
 
 //route to show the user profile
-router.get('/profile', [userAuth], (req, res) => {
+router.post('/profile', [userAuth], (req, res) => {
     userControls.showProfile({
         "uid": req.body.uid
     })
@@ -50,7 +50,7 @@ router.get('/profile', [userAuth], (req, res) => {
 
 
 //route to update the user profile
-router.get('/updateProfile', [userAuth], (req, res) => {
+router.put('/updateProfile', [userAuth], (req, res) => {
     userControls.updateProfile({
         uid: req.body.uid,
         name: req.body.name
