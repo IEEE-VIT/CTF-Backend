@@ -52,7 +52,7 @@ const checkUserUid = (uid) => {
                 resolve(resp)
             })
             .catch((err) => {
-                console.log(chalk.red("User uid un-verified from authentication!"))
+                console.log(chalk.red("User UID Not verified from authentication!"))
                 reject({ error: err.message, message: "Unauthorised" })
             })
     })
