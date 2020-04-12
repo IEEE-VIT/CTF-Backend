@@ -13,8 +13,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-router.get('/', (req, res) => {
-    res.send("Test successfull!")
+app.get('/', (req, res) => {
+    res.send({
+        statusCode: 200,
+        payload: {
+            msg: "The Backend is healthy and running",
+        },
+    }).status(200)
 })
 
 
@@ -24,11 +29,11 @@ const questionRoute = require('./routes/tigerTeamRoutes');
 
 
 //Use Routes
-app.use('/user',userRoute);
-app.use('/tigerTeam',questionRoute);
+app.use('/user', userRoute);
+app.use('/tigerTeam', questionRoute);
 
 
 const port = process.env.PORT
-app.listen(port,()=>{
-    console.log('Server is up on port ',port)
+app.listen(port, () => {
+    console.log('Server is up on port ', port)
 })
