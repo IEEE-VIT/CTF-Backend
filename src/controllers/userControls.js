@@ -271,7 +271,6 @@ const showProfile = (user) => {
                             "email": doc._fieldsProto.email.stringValue,
                             // "defaultName": doc._fieldsProto.defaultName.booleanValue
                         }
-                        console.log(doc._fieldsProto)
                         resolve({
                             statusCode: 200,
                             payload: {

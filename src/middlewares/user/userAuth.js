@@ -2,7 +2,7 @@ const { checkUserUid, checkUserObject } = require('../../controllers/userControl
 
 const userAuth = async (req, res, next) => {
     try {
-        // console.log('Entered user auth')
+        console.log('Entered user auth')
         if (req.header("Authorization") === undefined) {
             throw new Error("Unauthorized")
         }
