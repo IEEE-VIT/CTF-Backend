@@ -269,8 +269,11 @@ const showProfile = (user) => {
                             "points": doc._fieldsProto.points.integerValue,
                             "name": doc._fieldsProto.name.stringValue,
                             "email": doc._fieldsProto.email.stringValue,
-                            // "defaultName": doc._fieldsProto.defaultName.booleanValue
+                            "user name": doc._fieldsProto.userName.stringValue,
+                            "defaultName": doc._fieldsProto.defaultName.booleanValue
                         }
+
+                        console.log(profile)
                         resolve({
                             statusCode: 200,
                             payload: {
