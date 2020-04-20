@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
     }).status(200)
 })
 
-
 //Route imports
 const userRoute = require('./routes/userRoutes');
 const questionRoute = require('./routes/tigerTeamRoutes');
