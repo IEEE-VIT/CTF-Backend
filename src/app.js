@@ -12,7 +12,8 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/', (req, res) => {
+
+app.get('/', (req, res) => {
     res.send({
         statusCode: 200,
         payload: {
