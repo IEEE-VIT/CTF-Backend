@@ -42,3 +42,11 @@ Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2
 //leaderboard
 POST http://127.0.0.1:8000/user/leaderboard
 content-type: application/json
+
+
+#####
+
+//Get All Questions
+POST http://127.0.0.1:8000/user/getAllQuestions
+content-type: application/json
+Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2

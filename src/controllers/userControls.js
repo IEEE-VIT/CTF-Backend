@@ -220,18 +220,10 @@ const readAllQuestion = () => {
                 allQuestions = []
                 snap.forEach(doc => {
                     const id = doc.id;
-                    const name = doc.data().name;
-                    const description = doc.data().description;
-                    const url = doc.data().url;
-                    const latitude = doc.data().latitude;
-                    const longitude = doc.data().longitude;
+                    const data = doc.data()
                     allQuestions.push({
                         id,
-                        name,
-                        description,
-                        url,
-                        latitude,
-                        longitude
+                        data
                     })
                 })
                 console.log(chalk.green("All question Retrived"))
@@ -243,13 +235,13 @@ const readAllQuestion = () => {
                     }
                 })
             })
-            .catch((err) => {
+            .catch((e) => {
                 console.log(chalk.red("Error in Reading all the question details"))
                 reject({
                     statusCode: 400,
                     payload: {
                         msg: "Server Side error contact support"
-                    }
+                    },
                 })
             })
     })
@@ -265,7 +257,6 @@ const showProfile = (user) => {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
                         const profile = {
-                            "uid": doc._fieldsProto.uid.stringValue,
                             "points": doc._fieldsProto.points.integerValue,
                             "name": doc._fieldsProto.name.stringValue,
                             "email": doc._fieldsProto.email.stringValue,
@@ -332,7 +323,6 @@ const getLeaderboard = () => {
             snapshot.forEach(doc => {
                 var obj = doc.data();
                 var leaderboard = {
-                    uid: obj.uid,
                     points: obj.points,
                     name: obj.name
                 }
