@@ -323,7 +323,8 @@ const getLeaderboard = () => {
                 var obj = doc.data();
                 var leaderboard = {
                     points: obj.points,
-                    name: obj.name
+                    userName: obj.userName,
+                    questionAnswered: obj.qAnswered
                 }
                 data.push(leaderboard);
             });
