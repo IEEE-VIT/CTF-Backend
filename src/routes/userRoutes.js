@@ -29,7 +29,7 @@ router.post('/profile', [userAuth], (req, res) => {
 router.put('/updateProfile', [userAuth], (req, res) => {
     userControls.updateProfile({
         uid: req.body.uid,
-        name: req.body.name
+        userName: req.body.userName
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
