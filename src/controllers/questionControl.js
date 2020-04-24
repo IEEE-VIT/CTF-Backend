@@ -20,8 +20,8 @@ const createQuestion = (ques) => {
             "hint": ques.hint,
             "url": ques.url,
             "flag": cryptFlag,
-            "latitude":latitude,
-            "longitude":longitude
+            "latitude":ques.latitude,
+            "longitude":ques.longitude
         })
             .then(async () => {
                 console.log(chalk.green("New question added"))

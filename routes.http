@@ -22,7 +22,7 @@ Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2
 //user profile
 POST http://127.0.0.1:8000/user/profile
 content-type: application/json
-Authorization: NCJ58s1v59WjGKF3X7uYdeNA1413
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 
 
 #####
@@ -30,10 +30,10 @@ Authorization: NCJ58s1v59WjGKF3X7uYdeNA1413
 //update profile
 PUT http://127.0.0.1:8000/user/updateProfile
 content-type: application/json
-Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2
+Authorization: bdyGidBXQRZINQEHwDUczjYBYWf1
 
 {
-    "name":"yuvrajUpdated"
+    "userName":"ChangedUsername"
 } 
 
 

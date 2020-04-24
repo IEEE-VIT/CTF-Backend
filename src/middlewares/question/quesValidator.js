@@ -24,11 +24,6 @@ const quesValidator = (req, res, next) => {
         errorList.push('URL is Invalid, Please enter a valid URL')
     }
 
-    //Check on hint
-    if((hint.lenght > 20)){
-        errorList.push('Hint length should be less than 20 character!')
-    }
-
     //Check on flag
     if((flag.match(/(^CTF\{[A-Z0-9!@#$%^&*_+=-]{5,20}\}$)/gi) == null)){
         errorList.push('Flag needs to be of the type CTF{I_am_a_FLAG}')

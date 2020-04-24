@@ -10,7 +10,6 @@ const createUser = (user) => {
         const ctfName = `CTF-${randomString}`
         userRef.set({
             uid: user.uid,
-            name: user.name,
             email: user.email,
             userName: ctfName,
             qAnswered: [],
