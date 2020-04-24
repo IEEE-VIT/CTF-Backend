@@ -255,21 +255,35 @@ const showProfile = (user) => {
                 if (docSnapshot.exists) {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
-                        const profile = {
-                            "points": doc._fieldsProto.points.integerValue,
-                            "name": doc._fieldsProto.name.stringValue,
-                            "email": doc._fieldsProto.email.stringValue,
-                            "user name": doc._fieldsProto.userName.stringValue,
-                            "defaultName": doc._fieldsProto.defaultName.booleanValue
-                        }
-
-                        console.log(profile)
-                        resolve({
-                            statusCode: 200,
-                            payload: {
-                                msg: "Profile ready to be displayed",
-                                userProfile: profile
+                        const query = database.collection('Users').orderBy('points', 'desc');
+                        query.get()
+                        .then((snapshot) => {
+                            var rank;
+                            var temp = 0;
+                            snapshot.forEach((doc_user) => {
+                                temp = temp +1
+                                if(doc_user.data().uid == user.uid){
+                                    console.log(doc_user.data())
+                                    rank = temp;
+                                }
+                            });
+                            const profile = {
+                                "points": doc.data().points,
+                                "name": doc.data().name,
+                                "email": doc.data().email,
+                                "user name": doc.data().userName,
+                                "defaultName": doc.data().defaultName,
+                                "rank" : rank
                             }
+    
+                            console.log(profile)
+                            resolve({
+                                statusCode: 200,
+                                payload: {
+                                    msg: "Profile ready to be displayed",
+                                    userProfile: profile
+                                }
+                            })
                         })
                     });
                 }
