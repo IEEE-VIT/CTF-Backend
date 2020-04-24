@@ -30,10 +30,10 @@ Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 //update profile
 PUT http://127.0.0.1:8000/user/updateProfile
 content-type: application/json
-Authorization: bdyGidBXQRZINQEHwDUczjYBYWf1
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 
 {
-    "userName":"ChangedUsername"
+    "userName":"abcdefg"
 } 
 
 
@@ -49,4 +49,4 @@ content-type: application/json
 //Get All Questions
 POST http://127.0.0.1:8000/user/getAllQuestions
 content-type: application/json
-Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
