@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
         statusCode: 200,
         payload: {
             msg: "The Backend is healthy and running",
+            ci : "CI Test successfull"
         },
     }).status(200)
 })
