@@ -279,7 +279,7 @@ const showProfile = (user) => {
                                 });
                                 const profile = {
                                     "points": doc.data().points,
-                                    "name": doc.data().name,
+                                    "qAnswered": doc.data().qAnswered,
                                     "email": doc.data().email,
                                     "user name": doc.data().userName,
                                     "defaultName": doc.data().defaultName,
@@ -312,6 +312,7 @@ const showProfile = (user) => {
 const updateProfile = (user) => {
     return new Promise(async (resolve, reject) => {
         const userRef = database.collection('Users').doc(user.uid)
+        user.defaultName = false
         await userRef.update(user)
             .then(() => {
                 console.log(chalk.green("User Update"))
