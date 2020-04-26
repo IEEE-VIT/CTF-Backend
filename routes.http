@@ -10,11 +10,11 @@ Authorization: NCJ58s1v59WjGKF3X7uYdeNA1413
 //user create
 POST http://127.0.0.1:8000/user/create
 content-type: application/json
-Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2
+Authorization: PblkBCtKKjSKuWIXTrhN5rNSmB22
 
 {
-    "name": "TestUser",
-    "email": "TestUser@gmail.com"
+    "name": "newuser",
+    "email": "newuser@gmail.com"
 }
 
 #####
@@ -28,12 +28,12 @@ Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 #####
 
 //update profile
-PUT http://127.0.0.1:8000/user/updateProfile
+POST http://127.0.0.1:8000/user/updateProfile
 content-type: application/json
-Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
+Authorization: PblkBCtKKjSKuWIXTrhN5rNSmB22
 
 {
-    "userName":"beta user"
+    "userName":"sarthak399"
 } 
 
 
