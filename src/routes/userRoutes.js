@@ -54,10 +54,6 @@ router.post('/profile', [userAuth], (req, res) => {
         .catch(err => res.status(400).send(err))
 })
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 13c44e906fd4c9e7d5efab57666d41bbfd32a36f
 router.post('/leaderboard', (req, res) => {
     console.log(chalk.yellow('Fetching Leaderboards...'))
     userControls.getLeaderboard()
