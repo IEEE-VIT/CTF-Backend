@@ -218,11 +218,21 @@ const readAllQuestion = () => {
             .then(snap => {
                 allQuestions = []
                 snap.forEach(doc => {
-                    const id = doc.id;
-                    const data = doc.data()
+                    const id = doc.id
+                    const description = doc.data().description
+                    const latitude = doc.data().latitude
+                    const longitude = doc.data().longitude
+                    const name = doc.data().name
+                    const url = doc.data().url
                     allQuestions.push({
                         id,
-                        data
+                        data: {
+                            name,
+                            url,
+                            description,
+                            longitude,
+                            latitude
+                        }
                     })
                 })
                 console.log(chalk.green("All question Retrived"))
@@ -257,34 +267,34 @@ const showProfile = (user) => {
                         console.log(chalk.green("User exists!"));
                         const query = database.collection('Users').orderBy('points', 'desc');
                         query.get()
-                        .then((snapshot) => {
-                            var rank;
-                            var temp = 0;
-                            snapshot.forEach((doc_user) => {
-                                temp = temp +1
-                                if(doc_user.data().uid == user.uid){
-                                    console.log(doc_user.data())
-                                    rank = temp;
+                            .then((snapshot) => {
+                                var rank;
+                                var temp = 0;
+                                snapshot.forEach((doc_user) => {
+                                    temp = temp + 1
+                                    if (doc_user.data().uid == user.uid) {
+                                        console.log(doc_user.data())
+                                        rank = temp;
+                                    }
+                                });
+                                const profile = {
+                                    "points": doc.data().points,
+                                    "name": doc.data().name,
+                                    "email": doc.data().email,
+                                    "user name": doc.data().userName,
+                                    "defaultName": doc.data().defaultName,
+                                    "rank": rank
                                 }
-                            });
-                            const profile = {
-                                "points": doc.data().points,
-                                "name": doc.data().name,
-                                "email": doc.data().email,
-                                "user name": doc.data().userName,
-                                "defaultName": doc.data().defaultName,
-                                "rank" : rank
-                            }
-    
-                            console.log(profile)
-                            resolve({
-                                statusCode: 200,
-                                payload: {
-                                    msg: "Profile ready to be displayed",
-                                    userProfile: profile
-                                }
+
+                                console.log(profile)
+                                resolve({
+                                    statusCode: 200,
+                                    payload: {
+                                        msg: "Profile ready to be displayed",
+                                        userProfile: profile
+                                    }
+                                })
                             })
-                        })
                     });
                 }
             }).catch((err) => {
