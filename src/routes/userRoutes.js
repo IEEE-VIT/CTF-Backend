@@ -59,8 +59,7 @@ router.post('/profile', [userAuth], (req, res) => {
 router.post('/updateProfile', [userAuth], (req, res) => {
     userControls.updateProfile({
         uid: req.body.uid,
-        userName: req.body.userName,
-        defaultName: false
+        userName: req.body.userName
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))

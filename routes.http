@@ -30,10 +30,10 @@ Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 //update profile
 PUT http://127.0.0.1:8000/user/updateProfile
 content-type: application/json
-Authorization: bdyGidBXQRZINQEHwDUczjYBYWf1
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 
 {
-    "userName":"new name"
+    "userName":"beta user"
 } 
 
 
