@@ -1,0 +1,52 @@
+
+//root
+GET https://ieee-ctf-backend.herokuapp.com/
+content-type: application/json
+Authorization: NCJ58s1v59WjGKF3X7uYdeNA1413
+
+
+#####
+
+//user create
+POST https://ieee-ctf-backend.herokuapp.com/user/create
+content-type: application/json
+Authorization: Yx6XyNS1subpWa54dkyZWVzk1aG2
+
+{
+    "name": "TestUser",
+    "email": "TestUser@gmail.com"
+}
+
+#####
+
+//user profile
+POST https://ieee-ctf-backend.herokuapp.com/user/profile
+content-type: application/json
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
+
+
+#####
+
+//update profile
+PUT https://ieee-ctf-backend.herokuapp.com/user/updateProfile
+content-type: application/json
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
+
+{
+    "userName":"alpha user"
+} 
+
+
+#####
+
+//leaderboard
+POST https://ieee-ctf-backend.herokuapp.com/user/leaderboard
+content-type: application/json
+
+
+#####
+
+//Get All Questions
+POST https://ieee-ctf-backend.herokuapp.com/user/getAllQuestions
+content-type: application/json
+Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
