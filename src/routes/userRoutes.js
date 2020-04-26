@@ -4,6 +4,7 @@ const userCreate = require('../middlewares/user/userCreateMiddleware');
 const previouslySolved = require('../middlewares/universal/previouslySolved');
 const userAuth = require('../middlewares/user/userAuth');
 const capcha = require('../middlewares/user/capcha');
+const uniqueName = require('../middlewares/user/uniqueName')
 const chalk = require('chalk')
 
 
@@ -26,7 +27,7 @@ router.post('/profile', [userAuth], (req, res) => {
 
 
 //route to update the user profile
-router.put('/updateProfile', [userAuth], (req, res) => {
+router.put('/updateProfile', [userAuth, uniqueName], (req, res) => {
     userControls.updateProfile({
         uid: req.body.uid,
         userName: req.body.userName
