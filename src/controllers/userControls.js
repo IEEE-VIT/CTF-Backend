@@ -111,41 +111,55 @@ const getUserInfo = (uid) => {
 }
 
 const checkAnswer = (uid, answer, questionId) => {
+    console.log("Checking Answer...")
     return new Promise(async (resolve, reject) => {
         const question = database.collection('Questions').doc(questionId)
         question.get()
             .then(async (doc) => {
+                // console.log(doc.data())
                 //check if answer is right or not
                 if (bcrypt.compareSync(answer, doc.data().flag)) {
+
                     //check if hint used or not
+                    let hintState = false
                     const user = database.collection('Users').doc(uid)
                     await user.get()
                         .then(snap => {
+                            // console.log(snap._fieldsProto)
                             snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
-                                if (value.stringValue === questionId) {
-                                    const updatePoints = user.update({
-                                        points: admin.firestore.FieldValue.increment(100)
-                                    })
-                                    resolve({
-                                        statusCode: 200,
-                                        payload: {
-                                            msg: "Answer correct",
-                                            hintUsed: false
-                                        }
-                                    })
-                                } else {
-                                    const updatePoints = user.update({
-                                        points: admin.firestore.FieldValue.increment(50)
-                                    })
-                                    resolve({
-                                        statusCode: 200,
-                                        payload: {
-                                            msg: "Answer correct",
-                                            hintUsed: true
-                                        }
-                                    })
+                                if (value.stringValue == questionId) {
+                                    hintState = true
                                 }
-                            });
+                            })
+                        })
+                    //check the number of previously solved
+                    const solved = doc._fieldsProto.solved.integerValue
+                    // console.log(hintState, solved)
+                    await calaculatePoints(hintState, solved)
+                        .then((points) => {
+                            user.update({
+                                points: admin.firestore.FieldValue.increment(points)
+                            })
+                            /// Increment the solved in the question doc as well here
+
+                            question.update({
+                                solved: admin.firestore.FieldValue.increment(1)
+                            })
+                            resolve({
+                                statusCode: 200,
+                                payload: {
+                                    msg: "Answer correct",
+                                    hintUsed: hintState
+                                }
+                            })
+                        }).catch((e) => {
+                            console.log(e)
+                            reject({
+                                statusCode: 400,
+                                payload: {
+                                    msg: "Server Side Error, Contact Support!"
+                                },
+                            })
                         })
                 } else {
                     resolve({
@@ -160,7 +174,7 @@ const checkAnswer = (uid, answer, questionId) => {
                 reject({
                     statusCode: 400,
                     payload: {
-                        msg: "Answer not verified"
+                        msg: "Server Side Error, Contact Support!"
                     },
                 })
             })
@@ -374,6 +388,30 @@ const getLeaderboard = () => {
     })
 }
 
+const calaculatePoints = (hintUsed, solved) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const deductIfHint = 20
+            let points = 0
+            if (solved > 0 && solved <= 10)
+                points = 100
+            if (solved > 10 && solved <= 20)
+                points = 90
+            if (solved > 20 && solved <= 30)
+                points = 85
+            if (solved > 30)
+                points = 80
+            if (hintUsed)
+                points -= deductIfHint
+
+            resolve(points)
+
+        }
+        catch{
+            reject()
+        }
+    })
+}
 
 module.exports = {
     createUser,

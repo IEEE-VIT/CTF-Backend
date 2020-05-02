@@ -37,6 +37,18 @@ router.put('/updateProfile', [userAuth, uniqueName], (req, res) => {
 })
 
 
+//route to check flags on submit
+router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
+    userControls.checkAnswer(
+        req.body.uid,
+        req.body.flag,
+        req.body.id
+    )
+        .then(resp => res.status(200).send(resp))
+        .catch(err => res.status(400).send(err))
+})
+
+
 //route to get all questions on the globe
 router.post('/getAllQuestions', [userAuth], (req, res) => {
     userControls.readAllQuestion()
@@ -44,15 +56,6 @@ router.post('/getAllQuestions', [userAuth], (req, res) => {
         .catch(err => res.status(400).send(err))
 })
 
-
-//route to show the user profile
-router.post('/profile', [userAuth], (req, res) => {
-    userControls.showProfile({
-        "uid": req.body.uid
-    })
-        .then(resp => res.status(200).send(resp))
-        .catch(err => res.status(400).send(err))
-})
 
 router.post('/leaderboard', (req, res) => {
     console.log(chalk.yellow('Fetching Leaderboards...'))

@@ -1,20 +1,35 @@
 const { admin, database } = require('../../utils/firebase')
 
 const previouslySolved = (req, res, next) => {
-    // console.log(req)
+    console.log("Checking if Previously solved")
     const userRef = database.collection('Users').doc(req.body.uid)
     userRef.get()
         .then((doc) => {
+            let solved = false
             doc._fieldsProto.qAnswered.arrayValue.values.forEach(question => {
-                if (req.body.questionId === question.stringValue) {
-                    res.status(200).send({
-                        payload: {
-                            msg: "Question already solved"
-                        }
-                    })
+                if (req.body.id === question.stringValue) {
+                    solved = true
                 }
-            });
-            next()
+            })
+            if (solved) {
+                res.status(200).send({
+                    payload: {
+                        msg: "Question already solved"
+                    }
+                })
+            } else {
+                next()
+            }
+
+        })
+        .catch((e) => {
+            console.log("Error in checking Previously solved")
+            res.status(400).send({
+                status: 400,
+                payload: {
+                    msg: "Error in checking Previously solved, Contact Support!"
+                }
+            })
         })
 }
 
