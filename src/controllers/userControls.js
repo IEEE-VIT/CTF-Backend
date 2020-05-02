@@ -140,7 +140,11 @@ const checkAnswer = (uid, answer, questionId) => {
                             user.update({
                                 points: admin.firestore.FieldValue.increment(points)
                             })
-                            /// Increment the qAnswered in the question doc as well here
+                            /// Increment the solved in the question doc as well here
+
+                            question.update({
+                                solved: admin.firestore.FieldValue.increment(1)
+                            })
                             resolve({
                                 statusCode: 200,
                                 payload: {
