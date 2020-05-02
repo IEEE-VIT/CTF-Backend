@@ -132,11 +132,28 @@ const checkAnswer = (uid, answer, questionId) => {
                         })
                     //check the number of previously solved
                     const solved = doc._fieldsProto.solved.integerValue
-                    const points = await calaculatePoints(hintState, solved)
-                        .then(() => {
-
+                    await calaculatePoints(hintState, solved)
+                        .then((points) => {
+                            user.update({
+                                points: admin.firestore.FieldValue.increment(points)
+                            })
+                            /// Increment the qAnswered in the question doc as well here
+                            resolve({
+                                statusCode: 200,
+                                payload: {
+                                    msg: "Answer correct",
+                                    hintUsed: hintState
+                                }
+                            })
+                        }).catch((e) => {
+                            console.log(e)
+                            reject({
+                                statusCode: 400,
+                                payload: {
+                                    msg: "Server Side Error, Contact Support!"
+                                },
+                            })
                         })
-
                 } else {
                     resolve({
                         statusCode: 200,
@@ -364,6 +381,30 @@ const getLeaderboard = () => {
     })
 }
 
+const calaculatePoints = (hintUsed, solved) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const deductIfHint = 20
+            let points = 0
+            if (solved > 0 && solved <= 10)
+                points = 95
+            if (solved > 10 && solved <= 20)
+                points = 90
+            if (solved > 20 && solved <= 30)
+                points = 85
+            if (solved > 30)
+                points = 80
+            if (hintUsed)
+                points -= deductIfHint
+
+            resolve(points)
+
+        }
+        catch{
+            reject()
+        }
+    })
+}
 
 module.exports = {
     createUser,
