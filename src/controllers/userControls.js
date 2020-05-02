@@ -117,36 +117,26 @@ const checkAnswer = (uid, answer, questionId) => {
             .then(async (doc) => {
                 //check if answer is right or not
                 if (bcrypt.compareSync(answer, doc.data().flag)) {
+
                     //check if hint used or not
+                    let hintState = false
                     const user = database.collection('Users').doc(uid)
                     await user.get()
                         .then(snap => {
                             snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
-                                if (value.stringValue === questionId) {
-                                    const updatePoints = user.update({
-                                        points: admin.firestore.FieldValue.increment(100)
-                                    })
-                                    resolve({
-                                        statusCode: 200,
-                                        payload: {
-                                            msg: "Answer correct",
-                                            hintUsed: false
-                                        }
-                                    })
-                                } else {
-                                    const updatePoints = user.update({
-                                        points: admin.firestore.FieldValue.increment(50)
-                                    })
-                                    resolve({
-                                        statusCode: 200,
-                                        payload: {
-                                            msg: "Answer correct",
-                                            hintUsed: true
-                                        }
-                                    })
+                                if (value.stringValue == questionId) {
+                                    hintState = true
+                                    break
                                 }
-                            });
+                            })
                         })
+                    //check the number of previously solved
+                    const solved = doc._fieldsProto.solved.integerValue
+                    const points = await calaculatePoints(hintState, solved)
+                        .then(() => {
+
+                        })
+
                 } else {
                     resolve({
                         statusCode: 200,
@@ -160,7 +150,7 @@ const checkAnswer = (uid, answer, questionId) => {
                 reject({
                     statusCode: 400,
                     payload: {
-                        msg: "Answer not verified"
+                        msg: "Server Side Error, Contact Support!"
                     },
                 })
             })
