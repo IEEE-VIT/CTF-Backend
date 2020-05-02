@@ -38,7 +38,7 @@ router.put('/updateProfile', [userAuth, uniqueName], (req, res) => {
 
 
 //route to check flags on submit
-router.post('/checkFlag', [userAuth], (req, res) => {
+router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
     userControls.checkAnswer(
         req.body.uid,
         req.body.flag,
