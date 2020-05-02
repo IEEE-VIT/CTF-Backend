@@ -111,10 +111,12 @@ const getUserInfo = (uid) => {
 }
 
 const checkAnswer = (uid, answer, questionId) => {
+    console.log("Checking Answer...")
     return new Promise(async (resolve, reject) => {
         const question = database.collection('Questions').doc(questionId)
         question.get()
             .then(async (doc) => {
+                // console.log(doc.data())
                 //check if answer is right or not
                 if (bcrypt.compareSync(answer, doc.data().flag)) {
 
@@ -123,15 +125,16 @@ const checkAnswer = (uid, answer, questionId) => {
                     const user = database.collection('Users').doc(uid)
                     await user.get()
                         .then(snap => {
+                            // console.log(snap._fieldsProto)
                             snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
                                 if (value.stringValue == questionId) {
                                     hintState = true
-                                    break
                                 }
                             })
                         })
                     //check the number of previously solved
                     const solved = doc._fieldsProto.solved.integerValue
+                    // console.log(hintState, solved)
                     await calaculatePoints(hintState, solved)
                         .then((points) => {
                             user.update({
@@ -387,7 +390,7 @@ const calaculatePoints = (hintUsed, solved) => {
             const deductIfHint = 20
             let points = 0
             if (solved > 0 && solved <= 10)
-                points = 95
+                points = 100
             if (solved > 10 && solved <= 20)
                 points = 90
             if (solved > 20 && solved <= 30)

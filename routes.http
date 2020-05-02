@@ -50,3 +50,35 @@ content-type: application/json
 POST http://127.0.0.1:8000/user/getAllQuestions
 content-type: application/json
 Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
+
+
+#####
+
+//Check Answer
+POST http://127.0.0.1:8000/user/checkFlag
+content-type: application/json
+Authorization: kmtIGdRwCDZnLf5r6P6SFx61Tsl1
+
+{
+    "id": "222aitk9pkn24t",
+    "flag": "CTF{This_is_a_flag}"
+}
+
+
+
+#####
+
+//create a Questions
+POST http://127.0.0.1:8000/tigerTeam/create
+content-type: application/json
+
+{
+	"name": "QuesOne",
+	"url": "https://testurl.com",
+	"hint": "testH9int",
+	"description": "testDesc",
+	"flag": "CTF{This_is_a_flag}",
+	"secret": "Enigma is better than Riddler",
+    "latitude": "12.56",
+    "longitude": "48.46"
+}

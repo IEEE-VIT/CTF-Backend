@@ -44,7 +44,8 @@ router.patch('/update', [tigerTeamAuth, quesValidator], (req, res) => {
         hint: req.body.hint,
         flag: req.body.flag,
         latitude: req.body.latitude,
-        longitude: req.body.longitude
+        longitude: req.body.longitude,
+        solved: req.body.solved
     })
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
