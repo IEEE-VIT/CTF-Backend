@@ -238,6 +238,7 @@ const readAllQuestion = () => {
                     const longitude = doc.data().longitude
                     const name = doc.data().name
                     const url = doc.data().url
+                    const solved = doc.data().solved
                     allQuestions.push({
                         id,
                         data: {
@@ -245,7 +246,8 @@ const readAllQuestion = () => {
                             url,
                             description,
                             longitude,
-                            latitude
+                            latitude,
+                            solved
                         }
                     })
                 })
