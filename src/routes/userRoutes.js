@@ -3,7 +3,7 @@ const userControls = require('../controllers/userControls');
 const userCreate = require('../middlewares/user/userCreateMiddleware');
 const previouslySolved = require('../middlewares/universal/previouslySolved');
 const userAuth = require('../middlewares/user/userAuth');
-const capcha = require('../middlewares/user/capcha');
+// const capcha = require('../middlewares/user/capcha');
 const uniqueName = require('../middlewares/user/uniqueName')
 const chalk = require('chalk')
 
