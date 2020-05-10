@@ -65,6 +65,17 @@ Authorization: VHuANDEdI7fXS6lkADjo5Pe4viG2
 }
 
 
+#####
+
+//Fetch Hint
+POST http://127.0.0.1:8000/user/hint
+content-type: application/json
+Authorization: 1WY5rkgkXXcxP8kTURGthQBz44l1
+
+{
+    "questionID": "22258tk9zelzvg"
+}
+
 
 #####
 
