@@ -96,8 +96,7 @@ const getUserInfo = (uid) => {
                 if (docSnapshot.exists) {
                     userRef.onSnapshot((doc) => {
                         console.log(chalk.green("User exists!"));
-                        console.log(doc._fieldsProto)
-                        resolve(true)
+                        resolve(doc._fieldsProto)
                     });
                 }
                 else {
@@ -225,13 +224,20 @@ const fetchHint = (questionID, uid) => {
     })
 }
 
-const readAllQuestion = () => {
+const readAllQuestion = (uid) => {
     return new Promise(async (resolve, reject) => {
         const questionRef = database.collection('Questions')
-        await questionRef.get()
+
+        let allQuestions = []
+
+        const userDoc = await getUserInfo(uid)
+        const userHintUsed = userDoc.hintsUsed.arrayValue.values
+
+        questionRef.get()
             .then(snap => {
-                allQuestions = []
-                snap.forEach(doc => {
+                snap.forEach(async doc => {
+
+                    let hint = false
                     const id = doc.id
                     const description = doc.data().description
                     const latitude = doc.data().latitude
@@ -239,6 +245,13 @@ const readAllQuestion = () => {
                     const name = doc.data().name
                     const url = doc.data().url
                     const solved = doc.data().solved
+
+                    userHintUsed.forEach((Userhint) => {
+                        if (Userhint.stringValue == id) {
+                            hint = true
+                        }
+                    })
+
                     allQuestions.push({
                         id,
                         data: {
@@ -247,7 +260,8 @@ const readAllQuestion = () => {
                             description,
                             longitude,
                             latitude,
-                            solved
+                            solved,
+                            hint
                         }
                     })
                 })
@@ -269,6 +283,7 @@ const readAllQuestion = () => {
                     },
                 })
             })
+
     })
 }
 

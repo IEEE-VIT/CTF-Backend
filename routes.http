@@ -49,7 +49,7 @@ content-type: application/json
 //Get All Questions
 POST http://127.0.0.1:8000/user/getAllQuestions
 content-type: application/json
-Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
+Authorization: 1WY5rkgkXXcxP8kTURGthQBz44l1
 
 
 #####

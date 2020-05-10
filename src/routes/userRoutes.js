@@ -29,8 +29,8 @@ router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
 
 //route to show the hint of a given question
 router.post('/hint', userAuth, (req, res) => {
-    var questionID = req.body.questionID;
-    var uid = req.body.uid;
+    const questionID = req.body.questionID;
+    const uid = req.body.uid;
     userControls.fetchHint(questionID, uid)
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
@@ -39,7 +39,8 @@ router.post('/hint', userAuth, (req, res) => {
 
 //route to get all questions on the globe
 router.post('/getAllQuestions', [userAuth], (req, res) => {
-    userControls.readAllQuestion()
+    const uid = req.body.uid
+    userControls.readAllQuestion(uid)
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
