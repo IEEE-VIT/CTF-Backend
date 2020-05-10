@@ -4,6 +4,8 @@ const userCreate = require('../middlewares/user/userCreateMiddleware');
 const previouslySolved = require('../middlewares/universal/previouslySolved');
 const userAuth = require('../middlewares/user/userAuth');
 // const capcha = require('../middlewares/user/capcha');
+const uniqueName = require('../middlewares/user/uniqueName')
+const chalk = require('chalk')
 
 //route to create for a user
 router.post('/create', [userCreate], (req, res) => {
@@ -13,9 +15,13 @@ router.post('/create', [userCreate], (req, res) => {
 })
 
 
-//route to check the submitted answer
-router.post("/checkAnswer", [previouslySolved, userAuth], (req, res) => {
-    userControls.checkAnswer(req.body.uid, req.body.answer, req.body.questionId)
+//route to check flags on submit
+router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
+    userControls.checkAnswer(
+        req.body.uid,
+        req.body.flag,
+        req.body.id
+    )
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
 })
@@ -56,6 +62,13 @@ router.post('/updateProfile', [userAuth], (req, res) => {
         name: req.body.name
     })
         .then(resp => res.status(200).send(resp))
+        .catch(err => res.status(400).send(err))
+})
+
+router.post('/leaderboard', (req, res) => {
+    console.log(chalk.yellow('Fetching Leaderboards...'))
+    userControls.getLeaderboard()
+        .then(resp => res.send(resp).status(200))
         .catch(err => res.status(400).send(err))
 })
 
