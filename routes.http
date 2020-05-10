@@ -30,10 +30,10 @@ Authorization: XAvpYLfU9eTCTfCkEvQIH8nXpy62
 //update profile
 POST http://127.0.0.1:8000/user/updateProfile
 content-type: application/json
-Authorization: PblkBCtKKjSKuWIXTrhN5rNSmB22
+Authorization: 1WY5rkgkXXcxP8kTURGthQBz44l1
 
 {
-    "userName":"sarthak399"
+    "userName":"absgdhfki"
 } 
 
 
