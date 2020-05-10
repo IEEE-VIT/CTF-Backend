@@ -225,49 +225,82 @@ const fetchHint = (questionID, uid) => {
     })
 }
 
-const readAllQuestion = () => {
+const readAllQuestion = (uid) => {
     return new Promise(async (resolve, reject) => {
         const questionRef = database.collection('Questions')
-        await questionRef.get()
-            .then(snap => {
-                allQuestions = []
-                snap.forEach(doc => {
-                    const id = doc.id
-                    const description = doc.data().description
-                    const latitude = doc.data().latitude
-                    const longitude = doc.data().longitude
-                    const name = doc.data().name
-                    const url = doc.data().url
-                    const solved = doc.data().solved
-                    allQuestions.push({
-                        id,
-                        data: {
-                            name,
-                            url,
-                            description,
-                            longitude,
-                            latitude,
-                            solved
-                        }
+        const userRef = database.collection('Users').doc(uid)
+        let allQuestions = []
+        let userHintUsed = []
+        await userRef.get()
+            .then(async (docSnapshot) => {
+                if (docSnapshot.exists) {
+                    userRef.onSnapshot((doc) => {
+                        console.log(chalk.green("User exists!"));
+                        // console.log(doc._fieldsProto.hintsUsed.arrayValue.values)
+                        userHintUsed = doc._fieldsProto.hintsUsed.arrayValue.values
+                        console.log(userHintUsed)
+                        return (userHintUsed)
+                    });
+                }
+                else {
+                    reject({
+                        statusCode: 200,
+                        payload: {
+                            msg: "Server Side error contact support"
+                        },
                     })
-                })
-                console.log(chalk.green("All question Retrived"))
-                resolve({
-                    statusCode: 200,
-                    payload: {
-                        msg: "Question Successfully fetched",
-                        body: allQuestions
-                    }
-                })
+                }
             })
-            .catch((e) => {
-                console.log(chalk.red("Error in Reading all the question details"))
-                reject({
-                    statusCode: 400,
-                    payload: {
-                        msg: "Server Side error contact support"
-                    },
-                })
+            .then(async (hintUsed) => {
+                console.log(hintUsed)
+                await questionRef.get()
+                    .then(snap => {
+
+                        snap.forEach(async doc => {
+                            let hint = false
+                            const id = doc.id
+                            const description = doc.data().description
+                            const latitude = doc.data().latitude
+                            const longitude = doc.data().longitude
+                            const name = doc.data().name
+                            const url = doc.data().url
+                            const solved = doc.data().solved
+                            userHintUsed.forEach(hint => {
+                                // console.log(hint.stringValue)
+                                if (hint.stringValue == uid)
+                                    hint = true
+                            });
+                            allQuestions.push({
+                                id,
+                                data: {
+                                    name,
+                                    url,
+                                    description,
+                                    longitude,
+                                    latitude,
+                                    solved,
+                                    hint
+                                }
+                            })
+                        })
+                        console.log(chalk.green("All question Retrived"))
+                        resolve({
+                            statusCode: 200,
+                            payload: {
+                                msg: "Question Successfully fetched",
+                                body: allQuestions
+                            }
+                        })
+                    })
+                    .catch((e) => {
+                        console.log(chalk.red("Error in Reading all the question details"))
+                        reject({
+                            statusCode: 400,
+                            payload: {
+                                msg: "Server Side error contact support"
+                            },
+                        })
+                    })
             })
     })
 }
