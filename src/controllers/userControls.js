@@ -121,10 +121,15 @@ const checkAnswer = (uid, answer, questionId) => {
 
                     //check if hint used or not
                     let hintState = false
+                    let questionAnswered = []
                     const user = database.collection('Users').doc(uid)
                     await user.get()
                         .then(snap => {
-                            // console.log(snap._fieldsProto)
+                            temp = snap._fieldsProto.qAnswered.arrayValue.values
+                            temp.forEach(obj => {
+                                questionAnswered.push(obj.stringValue)
+                            })
+                            questionAnswered.push(questionId)
                             snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
                                 if (value.stringValue == questionId) {
                                     hintState = true
@@ -133,11 +138,13 @@ const checkAnswer = (uid, answer, questionId) => {
                         })
                     //check the number of previously solved
                     const solved = doc._fieldsProto.solved.integerValue
-                    // console.log(hintState, solved)
+                    console.log(hintState, solved)
                     await calaculatePoints(hintState, solved)
                         .then((points) => {
+
                             user.update({
-                                points: admin.firestore.FieldValue.increment(points)
+                                points: admin.firestore.FieldValue.increment(points),
+                                qAnswered: questionAnswered
                             })
                             /// Increment the solved in the question doc as well here
 
@@ -410,7 +417,7 @@ const calaculatePoints = (hintUsed, solved) => {
         try {
             const deductIfHint = 20
             let points = 0
-            if (solved > 0 && solved <= 10)
+            if (solved >= 0 && solved <= 10)
                 points = 100
             if (solved > 10 && solved <= 20)
                 points = 90

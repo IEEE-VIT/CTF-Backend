@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "dev": "nodemon src/app.js",
     "start": "node src/app.js"
   },
@@ -30,5 +30,8 @@
     "url": "https://github.com/iamuv2000/CTF-Backend/issues"
   },
   "homepage": "https://github.com/iamuv2000/CTF-Backend#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  }
 }
