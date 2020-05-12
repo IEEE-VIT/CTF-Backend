@@ -12,12 +12,14 @@ const previouslySolved = (req, res, next) => {
                 }
             })
             if (solved) {
+                console.log("Question Previously Solved")
                 res.status(200).send({
                     payload: {
                         msg: "Question already solved"
                     }
                 })
             } else {
+                console.log("Question Not Previously Solved")
                 next()
             }
 
