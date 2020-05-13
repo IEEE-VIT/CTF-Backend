@@ -3,3 +3,4 @@ node_modules
 playground.js
 routes.http
 test.env
+coverage
