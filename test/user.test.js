@@ -1,16 +1,16 @@
 const request = require('supertest')
 const app = require('../src/index')
+const { admin, database } = require('../src/utils/firebase')
 jest.setTimeout(100000);
 
 
-beforeAll(done => {
-    done()
-})
+// beforeAll(async () => {
+//     await firebase.firestore.enableNetwork();
+// });
 
-afterAll(done => {
-    // Closing the server connection allows Jest to exit successfully.
-    done()
-})
+// afterAll(async () => {
+//     await firebase.firestore.close();
+// });
 
 
 test('api/', async () => {
