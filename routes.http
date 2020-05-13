@@ -10,11 +10,11 @@ Authorization: NCJ58s1v59WjGKF3X7uYdeNA1413
 //user create
 POST http://127.0.0.1:8000/user/create
 content-type: application/json
-Authorization: PblkBCtKKjSKuWIXTrhN5rNSmB22
+Authorization: jwoZpAOV5KVuYUyjmCSwEJL0vie2
 
 {
-    "name": "newuser",
-    "email": "newuser@gmail.com"
+    "name": "asdfg",
+    "email": "helolw@gmail.com"
 }
 
 #####
