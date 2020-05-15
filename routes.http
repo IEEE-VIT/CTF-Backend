@@ -57,7 +57,7 @@ Authorization: 1WY5rkgkXXcxP8kTURGthQBz44l1
 //Check Answer
 POST http://127.0.0.1:8000/user/checkFlag
 content-type: application/json
-Authorization: 1WY5rkgkXXcxP8kTURGthQBz44l1
+Authorization: T6PhQtPMfxdRRRxqCZXEQCT4HGv2
 
 {
     "id": "22258tk9zelzvg",
