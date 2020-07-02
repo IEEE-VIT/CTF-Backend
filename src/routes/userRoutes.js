@@ -6,6 +6,20 @@ const userAuth = require('../middlewares/user/userAuth');
 // const capcha = require('../middlewares/user/capcha');
 const uniqueName = require('../middlewares/user/uniqueName')
 const chalk = require('chalk')
+var Recaptcha = require('recaptcha-verify')
+
+var recaptcha = new Recaptcha({
+    secret: process.env.RECAPTCHA_KEY,
+    verbose: true
+});
+
+route.post("/auth/recaptcha", (req,res) => {
+    var token = req.body.token;
+    recaptcha.checkResponse(token,function(error,response){
+        if (error) res.status(401).send({auth: 0, message: "Failed to verify"})
+        else res.status(200).send({auth: 1, message: "Verified captcha"})
+    })
+})
 
 //route to create for a user
 router.post('/create', [userCreate], (req, res) => {
