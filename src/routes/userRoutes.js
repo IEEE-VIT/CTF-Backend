@@ -13,7 +13,7 @@ var recaptcha = new Recaptcha({
     verbose: true
 });
 
-route.post("/auth/recaptcha", (req,res) => {
+router.post("/auth/recaptcha", (req,res) => {
     var token = req.body.token;
     recaptcha.checkResponse(token,function(error,response){
         if (error) res.status(401).send({auth: 0, message: "Failed to verify"})
