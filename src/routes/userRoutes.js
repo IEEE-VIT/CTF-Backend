@@ -14,10 +14,17 @@ var recaptcha = new Recaptcha({
 });
 
 router.post("/auth/recaptcha", (req,res) => {
-    var token = req.body.token;
+	var token = req.body.token;
+	console.log(token)
+
     recaptcha.checkResponse(token,function(error,response){
-        if (error) res.status(401).send({auth: 0, message: "Failed to verify"})
-        else res.status(200).send({auth: 1, message: "Verified captcha"})
+		console.log(response)
+        if (response.success) {
+			res.status(200).send({auth: 1, message: "Verified captcha"})
+		}
+        else {
+			res.status(401).send({auth: 0, message: "Failed to verify"})
+		}
     })
 })
 
