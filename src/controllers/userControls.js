@@ -3,6 +3,8 @@ const chalk = require('chalk')
 const bcrypt = require('bcrypt')
 const crypto = require("crypto");
 
+const ctfTimeControls = require('./ctfTimeControls');
+
 const createUser = (user) => {
     return new Promise((resolve, reject) => {
         const userRef = database.collection('Users').doc(user.uid)
@@ -31,7 +33,7 @@ const createUser = (user) => {
             .catch((e) => {
                 console.log(chalk.red("Error in saving user details to db"))
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side error contact support"
                     },
@@ -79,7 +81,7 @@ const checkUserObject = (uid, resp) => {
             .catch((err) => {
                 console.log(chalk.red("User uid un-verified from database!"))
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     error: err.message,
                     message: "Unauthorised"
                 })
@@ -115,59 +117,50 @@ const checkAnswer = (uid, answer, questionId) => {
         const question = database.collection('Questions').doc(questionId)
         question.get()
             .then(async (doc) => {
-                // console.log(doc.data())
                 //check if answer is right or not
                 if (bcrypt.compareSync(answer, doc.data().flag)) {
-
                     //check if hint used or not
-                    let hintState = false
-                    let questionAnswered = []
+                    let hintState = false;
+                    let questionAnswered = [];
                     const user = database.collection('Users').doc(uid)
                     await user.get()
                         .then(snap => {
-                            temp = snap._fieldsProto.qAnswered.arrayValue.values
-                            temp.forEach(obj => {
-                                questionAnswered.push(obj.stringValue)
-                            })
-                            questionAnswered.push(questionId)
-                            snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
-                                if (value.stringValue == questionId) {
-                                    hintState = true
-                                }
-                            })
+                        temp = snap._fieldsProto.qAnswered.arrayValue.values
+                        temp.forEach(obj => {
+                            questionAnswered.push(obj.stringValue)
                         })
+                        questionAnswered.push(questionId)
+                        snap._fieldsProto.hintsUsed.arrayValue.values.forEach(value => {
+                            if (value.stringValue == questionId) {
+                                hintState = true
+                            }
+                        })
+                    })
+                    userDocc = await user.get()
                     //check the number of previously solved
                     const solved = doc._fieldsProto.solved.integerValue
                     console.log(hintState, solved)
-                    await calaculatePoints(hintState, solved)
-                        .then((points) => {
-
-                            user.update({
-                                points: admin.firestore.FieldValue.increment(points),
-                                qAnswered: questionAnswered
-                            })
-                            /// Increment the solved in the question doc as well here
-
-                            question.update({
-                                solved: admin.firestore.FieldValue.increment(1)
-                            })
-                            resolve({
-                                statusCode: 200,
-                                payload: {
-                                    msg: "Answer correct",
-                                    hintUsed: hintState
-                                }
-                            })
-                        }).catch((e) => {
-                            console.log(e)
-                            reject({
-                                statusCode: 400,
-                                payload: {
-                                    msg: "Server Side Error, Contact Support!"
-                                },
-                            })
-                        })
+                    var points = await calaculatePoints(hintState, solved)
+                    user.update({
+                        points: admin.firestore.FieldValue.increment(points),
+                        qAnswered: questionAnswered
+                    })
+                    question.update({
+                        solved: admin.firestore.FieldValue.increment(1)
+                    })
+                    console.log("update log function called")
+                    var updateLogsBool = await ctfTimeControls.updateLogs(doc.data().name, userDocc.data().userName, doc.data().description, points)
+                    resolve({
+                        statusCode: 200,
+                        payload: {
+                            msg: "Answer correct"
+                        }
+                    })
                 } else {
+                    const user = database.collection('Users').doc(uid)
+                    userDoc = await user.get()
+                    console.log("update log function called")
+                    var updateLogsBool = await ctfTimeControls.updateLogs(doc.data().name, userDoc.data().userName, doc.data().description, 0)
                     resolve({
                         statusCode: 200,
                         payload: {
@@ -178,7 +171,7 @@ const checkAnswer = (uid, answer, questionId) => {
             }).catch((e) => {
                 console.log(e)
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side Error, Contact Support!"
                     },
@@ -221,7 +214,7 @@ const fetchHint = (questionID, uid) => {
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching question details!"));
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side Error, Contact Support",
                         Error: err
@@ -284,7 +277,7 @@ const readAllQuestion = (uid) => {
             .catch((e) => {
                 console.log(chalk.red("Error in Reading all the question details"))
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side error contact support"
                     },
@@ -338,7 +331,7 @@ const showProfile = (user) => {
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching user details!"));
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side error contact support"
                     }
@@ -364,7 +357,7 @@ const updateProfile = (user) => {
             .catch((e) => {
                 console.log(chalk.red("Error in Updating User details"))
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side error contact support"
                     },
@@ -403,7 +396,7 @@ const getLeaderboard = () => {
             .catch(err => {
                 console.log('Error getting documents', err);
                 reject({
-                    statusCode: 400,
+                    statusCode: 500,
                     payload: {
                         msg: "Server Side error contact support"
                     },
