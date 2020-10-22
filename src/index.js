@@ -3,8 +3,16 @@ const app = express();
 const router = express.Router();
 const bodyParser = require("body-parser")
 var cors = require('cors');
+const rateLimit = require("express-rate-limit");
 const dotenv = require("dotenv");
 dotenv.config();
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
