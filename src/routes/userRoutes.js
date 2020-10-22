@@ -37,34 +37,34 @@ router.post('/create', [userCreate], (req, res) => {
 
 
 //route to check flags on submit
-router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
-    userControls.checkAnswer(
-        req.body.uid,
-        req.body.flag,
-        req.body.id
-    )
-        .then(resp => res.status(200).send(resp))
-        .catch(err => res.status(400).send(err))
-})
+// router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
+//     userControls.checkAnswer(
+//         req.body.uid,
+//         req.body.flag,
+//         req.body.id
+//     )
+//         .then(resp => res.status(200).send(resp))
+//         .catch(err => res.status(400).send(err))
+// })
 
 
 //route to show the hint of a given question
-router.post('/hint', userAuth, (req, res) => {
-    const questionID = req.body.questionID;
-    const uid = req.body.uid;
-    userControls.fetchHint(questionID, uid)
-        .then(resp => res.status(200).send(resp))
-        .catch(err => res.status(400).send(err))
-})
+// router.post('/hint', userAuth, (req, res) => {
+//     const questionID = req.body.questionID;
+//     const uid = req.body.uid;
+//     userControls.fetchHint(questionID, uid)
+//         .then(resp => res.status(200).send(resp))
+//         .catch(err => res.status(400).send(err))
+// })
 
 
 //route to get all questions on the globe
-router.post('/getAllQuestions', [userAuth], (req, res) => {
-    const uid = req.body.uid
-    userControls.readAllQuestion(uid)
-        .then(resp => res.status(200).send(resp))
-        .catch(err => res.status(400).send(err))
-})
+// router.post('/getAllQuestions', [userAuth], (req, res) => {
+//     const uid = req.body.uid
+//     userControls.readAllQuestion(uid)
+//         .then(resp => res.status(200).send(resp))
+//         .catch(err => res.status(400).send(err))
+// })
 
 
 //route to show the user profile
@@ -78,20 +78,20 @@ router.post('/profile', [userAuth], (req, res) => {
 
 
 //route to update the user profile
-router.post('/updateProfile', [userAuth, uniqueName], (req, res) => {
-    userControls.updateProfile({
-        uid: req.body.uid,
-        userName: req.body.userName
-    })
-        .then(resp => res.status(200).send(resp))
-        .catch(err => res.status(400).send(err))
-})
+// router.post('/updateProfile', [userAuth, uniqueName], (req, res) => {
+//     userControls.updateProfile({
+//         uid: req.body.uid,
+//         userName: req.body.userName
+//     })
+//         .then(resp => res.status(200).send(resp))
+//         .catch(err => res.status(400).send(err))
+// })
 
-router.post('/leaderboard', [userAuth], (req, res) => {
-    console.log(chalk.yellow('Fetching Leaderboards...'))
-    userControls.getLeaderboard()
-        .then(resp => res.send(resp).status(200))
-        .catch(err => res.status(400).send(err))
-})
+// router.post('/leaderboard', [userAuth], (req, res) => {
+//     console.log(chalk.yellow('Fetching Leaderboards...'))
+//     userControls.getLeaderboard()
+//         .then(resp => res.send(resp).status(200))
+//         .catch(err => res.status(400).send(err))
+// })
 
 module.exports = router;
