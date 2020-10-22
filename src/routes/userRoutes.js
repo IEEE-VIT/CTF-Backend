@@ -78,7 +78,7 @@ router.post('/profile', [userAuth], (req, res) => {
 
 
 //route to update the user profile
-router.post('/updateProfile', [userAuth], (req, res) => {
+router.post('/updateProfile', [userAuth, uniqueName], (req, res) => {
     userControls.updateProfile({
         uid: req.body.uid,
         userName: req.body.userName

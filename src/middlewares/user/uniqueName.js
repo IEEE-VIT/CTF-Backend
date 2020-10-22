@@ -1,6 +1,22 @@
 const { admin, database } = require('../../utils/firebase')
+const validator = require('validator');
 
 const uniqueName = async (req, res, next) => {
+    if (!validator.isAlphanumeric(validator.blacklist(req.body.userName, ' '))) {
+        res.status(400).send({
+            payload: {
+                msg: "Username invalid"
+            }
+        })
+    }
+
+    if (req.body.userName.length < 5 || req.body.userName.length > 24) {
+        res.status(400).send({
+            payload: {
+                msg: "Username too short or long. Username should be between 5-24 characters."
+            }
+        })
+    }
     console.log('Unique Name Check')
     const userRef = database.collection('Users')
     await userRef.get()

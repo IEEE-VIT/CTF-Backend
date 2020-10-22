@@ -43,7 +43,6 @@ const getLogs = (id) => {
             var data = [];
             snapshot.forEach(doc => {
                 var obj = doc.data();
-                console.log(obj)
                 var log = {
                     id: obj.id,
                     time: obj.time,
