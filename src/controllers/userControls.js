@@ -368,7 +368,7 @@ const updateProfile = (user) => {
 
 const getLeaderboard = () => {
     return new Promise((resolve, reject) => {
-        const query = database.collection('Users').orderBy('points', 'desc');
+        const query = database.collection('Users').orderBy('points', 'desc').limit(25);
         query.get().then(snapshot => {
             if (snapshot.empty) {
                 console.log('No matching documents.');

@@ -87,7 +87,7 @@ router.post('/updateProfile', [userAuth], (req, res) => {
         .catch(err => res.status(400).send(err))
 })
 
-router.post('/leaderboard', (req, res) => {
+router.post('/leaderboard', [userAuth], (req, res) => {
     console.log(chalk.yellow('Fetching Leaderboards...'))
     userControls.getLeaderboard()
         .then(resp => res.send(resp).status(200))
