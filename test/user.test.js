@@ -31,46 +31,46 @@ test('user/profile', async () => {
 })
 
 
-test('user/leaderboard', async () => {
-    await request(app)
-        .post('/user/leaderboard')
-        .set('Authorization', process.env.AUTH_KEY)
-        .expect(200)
+// test('user/leaderboard', async () => {
+//     await request(app)
+//         .post('/user/leaderboard')
+//         .set('Authorization', process.env.AUTH_KEY)
+//         .expect(200)
 
-})
-
-
-test('user/getAllQuestions', async () => {
-    await request(app)
-        .post('/user/getAllQuestions')
-        .set('Authorization', process.env.AUTH_KEY)
-        .expect(200)
-
-})
+// })
 
 
+// test('user/getAllQuestions', async () => {
+//     await request(app)
+//         .post('/user/getAllQuestions')
+//         .set('Authorization', process.env.AUTH_KEY)
+//         .expect(200)
 
-test('user/checkFlag', async () => {
-    await request(app)
-        .post('/user/checkFlag')
-        .set('Authorization', process.env.AUTH_KEY)
-        .send({
-            "id": "l1xy1mhrkg2d5x8z",
-            "flag": "CTF{ziitest}"
-        })
-        .expect(200)
-
-})
+// })
 
 
-test('user/hint', async () => {
-    await request(app)
-        .post('/user/hint')
-        .set('Authorization', process.env.AUTH_KEY)
-        .send({
-            "questionID": "l1xy1mhrkg2d5x8z"
-        })
-        .expect(200)
 
-})
+// test('user/checkFlag', async () => {
+//     await request(app)
+//         .post('/user/checkFlag')
+//         .set('Authorization', process.env.AUTH_KEY)
+//         .send({
+//             "id": "l1xy1mhrkg2d5x8z",
+//             "flag": "CTF{ziitest}"
+//         })
+//         .expect(200)
+
+// })
+
+
+// test('user/hint', async () => {
+//     await request(app)
+//         .post('/user/hint')
+//         .set('Authorization', process.env.AUTH_KEY)
+//         .send({
+//             "questionID": "l1xy1mhrkg2d5x8z"
+//         })
+//         .expect(200)
+
+// })
 
