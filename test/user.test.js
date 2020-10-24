@@ -1,5 +1,7 @@
 const request = require('supertest')
 const app = require('../src/index')
+const dotenv = require("dotenv");
+dotenv.config();
 const { admin, database } = require('../src/utils/firebase')
 jest.setTimeout(100000);
 
@@ -23,7 +25,7 @@ test('api/', async () => {
 test('user/profile', async () => {
     await request(app)
         .post('/user/profile')
-        .set('Authorization', 'XAvpYLfU9eTCTfCkEvQIH8nXpy62')
+        .set('Authorization', process.env.AUTH_KEY)
         .expect(200)
 
 })
@@ -32,6 +34,7 @@ test('user/profile', async () => {
 test('user/leaderboard', async () => {
     await request(app)
         .post('/user/leaderboard')
+        .set('Authorization', process.env.AUTH_KEY)
         .expect(200)
 
 })
@@ -40,7 +43,7 @@ test('user/leaderboard', async () => {
 test('user/getAllQuestions', async () => {
     await request(app)
         .post('/user/getAllQuestions')
-        .set('Authorization', 'XAvpYLfU9eTCTfCkEvQIH8nXpy62')
+        .set('Authorization', process.env.AUTH_KEY)
         .expect(200)
 
 })
@@ -50,10 +53,10 @@ test('user/getAllQuestions', async () => {
 test('user/checkFlag', async () => {
     await request(app)
         .post('/user/checkFlag')
-        .set('Authorization', 'XAvpYLfU9eTCTfCkEvQIH8nXpy62')
+        .set('Authorization', process.env.AUTH_KEY)
         .send({
-            "id": "22258tk9zelzvg",
-            "flag": "CTF{flag1}"
+            "id": "l1xy1mhrkg2d5x8z",
+            "flag": "CTF{ziitest}"
         })
         .expect(200)
 
@@ -63,9 +66,9 @@ test('user/checkFlag', async () => {
 test('user/hint', async () => {
     await request(app)
         .post('/user/hint')
-        .set('Authorization', 'XAvpYLfU9eTCTfCkEvQIH8nXpy62')
+        .set('Authorization', process.env.AUTH_KEY)
         .send({
-            "questionID": "22258tk9zelzvg"
+            "questionID": "l1xy1mhrkg2d5x8z"
         })
         .expect(200)
 
