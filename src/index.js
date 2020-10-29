@@ -4,20 +4,33 @@ const router = express.Router();
 const bodyParser = require("body-parser")
 var cors = require('cors');
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const expressip = require('express-ip');
 const dotenv = require("dotenv");
 dotenv.config();
 
 //Added rate limiter config
 const limiter = rateLimit({
-    windowMs: 60 * 1000,
-    max: 3
+    windowMs: 60 * 60 * 1000,
+    max: 6
 });
 
-app.use(limiter);
+// app.use(limiter);
+app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+//Logging url, IP, city, date and time
+app.use(expressip().getIpInfoMiddleware);
+app.use((req, res, next) => {
+    const ipInfo = req.ipInfo;
+    let newDate = new Date(Date.now());
+    var message = `URL:${req.url} IP:${ipInfo.ip}, City:${ipInfo.city}, DateTime:${newDate.toDateString()} ${newDate.toTimeString()}`;
+    console.log(message);
+    next();
+})
 
 app.get('/', (req, res) => {
     res.send({

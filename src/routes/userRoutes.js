@@ -1,35 +1,39 @@
 const router = require("express")();
 const userControls = require('../controllers/userControls');
 const userCreate = require('../middlewares/user/userCreateMiddleware');
+const verifyRecaptcha = require('../middlewares/user/recaptcha');
 const previouslySolved = require('../middlewares/universal/previouslySolved');
 const userAuth = require('../middlewares/user/userAuth');
 // const capcha = require('../middlewares/user/capcha');
 const uniqueName = require('../middlewares/user/uniqueName')
 const chalk = require('chalk')
-var Recaptcha = require('recaptcha-verify')
+// var Recaptcha = require('recaptcha-verify')
 
-var recaptcha = new Recaptcha({
-    secret: process.env.RECAPTCHA_KEY,
-    verbose: true
-});
+// var recaptcha = new Recaptcha({
+//     secret: process.env.RECAPTCHA_KEY,
+//     verbose: true
+// });
 
-router.post("/auth/recaptcha", (req,res) => {
-	var token = req.body.token;
-	console.log(token)
+// router.post("/auth/recaptcha", (req,res) => {
+//     console.log("recaptcha request");
+// 	var token = req.body.token;
+// 	console.log(token)
 
-    recaptcha.checkResponse(token,function(error,response){
-		console.log(response)
-        if (response.success) {
-			res.status(200).send({auth: 1, message: "Verified captcha"})
-		}
-        else {
-			res.status(401).send({auth: 0, message: "Failed to verify"})
-		}
-    })
-})
+//     recaptcha.checkResponse(token,function(error,response){
+// 		console.log(response)
+//         if (response.success) {
+//             console.log("Verified recaptcha")
+// 			res.status(200).send({auth: 1, message: "Verified captcha"})
+// 		}
+//         else {
+//             console.log("not verified recaptcha")
+// 			res.status(401).send({auth: 0, message: "Failed to verify"})
+// 		}
+//     })
+// })
 
 //route to create for a user
-router.post('/create', [userCreate], (req, res) => {
+router.post('/create', [verifyRecaptcha, userCreate], (req, res) => {
     userControls.createUser(req.user)
         .then(resp => res.status(200).send(resp))
         .catch(err => res.status(400).send(err))
@@ -37,7 +41,7 @@ router.post('/create', [userCreate], (req, res) => {
 
 
 //route to check flags on submit
-// router.post('/checkFlag', [userAuth, previouslySolved], (req, res) => {
+// router.post('/checkFlag', [verifyRecaptcha, userAuth, previouslySolved], (req, res) => {
 //     userControls.checkAnswer(
 //         req.body.uid,
 //         req.body.flag,
@@ -49,7 +53,7 @@ router.post('/create', [userCreate], (req, res) => {
 
 
 //route to show the hint of a given question
-// router.post('/hint', userAuth, (req, res) => {
+// router.post('/hint', [userAuth], (req, res) => {
 //     const questionID = req.body.questionID;
 //     const uid = req.body.uid;
 //     userControls.fetchHint(questionID, uid)
@@ -68,17 +72,17 @@ router.post('/create', [userCreate], (req, res) => {
 
 
 //route to show the user profile
-router.post('/profile', [userAuth], (req, res) => {
-    userControls.showProfile({
-        "uid": req.body.uid
-    })
-        .then(resp => res.status(200).send(resp))
-        .catch(err => res.status(400).send(err))
-})
+// router.post('/profile', [userAuth], (req, res) => {
+//     userControls.showProfile({
+//         "uid": req.body.uid
+//     })
+//         .then(resp => res.status(200).send(resp))
+//         .catch(err => res.status(400).send(err))
+// })
 
 
-//route to update the user profile
-// router.post('/updateProfile', [userAuth, uniqueName], (req, res) => {
+// route to update the user profile
+// router.post('/updateProfile', [verifyRecaptcha, userAuth, uniqueName], (req, res) => {
 //     userControls.updateProfile({
 //         uid: req.body.uid,
 //         userName: req.body.userName
