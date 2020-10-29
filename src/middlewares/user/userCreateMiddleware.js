@@ -4,7 +4,6 @@ const userCreate = async (req, res, next)=>{
     try{
         const uid = req.header("Authorization").replace("Bearer ", "")
         await userControls.checkUserUid(uid)
-
         //checking if user already registered
         const isUserAlreadyThere = await userControls.getUserInfo(uid)
         if(isUserAlreadyThere){
