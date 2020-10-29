@@ -15,7 +15,7 @@ const limiter = rateLimit({
     max: 6
 });
 
-// app.use(limiter);
+app.use(limiter);
 app.use(helmet());
 
 app.use(bodyParser.json());
