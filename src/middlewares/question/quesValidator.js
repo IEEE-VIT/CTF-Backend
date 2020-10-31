@@ -20,14 +20,14 @@ const quesValidator = (req, res, next) => {
     }
 
     //Check on url
-    if(!validator.isURL(url)){
-        errorList.push('URL is Invalid, Please enter a valid URL')
-    }
+    // if(!validator.isURL(url)){
+    //     errorList.push('URL is Invalid, Please enter a valid URL')
+    // }
 
     //Check on flag
-    if((flag.match(/(^CTF\{[A-Z0-9!@#$%^&*_+=-]{5,20}\}$)/gi) == null)){
-        errorList.push('Flag needs to be of the type CTF{I_am_a_FLAG}')
-    }
+    // if((flag.match(/(^IEEECTF\{[A-Z0-9!@#$%^&*_+=-]{5,20}\}$)/gi) == null)){
+    //     errorList.push('Flag needs to be of the type CTF{I_am_a_FLAG}')
+    // }
 
     if (errorList.length !== 0) {
         res.status(400).send({

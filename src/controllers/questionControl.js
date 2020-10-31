@@ -15,6 +15,7 @@ const createQuestion = (ques) => {
         const quesRef = database.collection('Questions').doc(quesID)
         await quesRef.set({
             "id": quesID,
+            "title":ques.title,
             "name": ques.name,
             "description": ques.description,
             "hint": ques.hint,

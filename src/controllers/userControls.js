@@ -240,6 +240,7 @@ const readAllQuestion = (uid) => {
                     let hint = false
                     const id = doc.id
                     const description = doc.data().description
+                    const title = doc.data().title
                     const latitude = doc.data().latitude
                     const longitude = doc.data().longitude
                     const name = doc.data().name
@@ -257,6 +258,7 @@ const readAllQuestion = (uid) => {
                         data: {
                             name,
                             url,
+                            title,
                             description,
                             longitude,
                             latitude,
@@ -408,7 +410,7 @@ const getLeaderboard = () => {
 const calaculatePoints = (hintUsed, solved) => {
     return new Promise((resolve, reject) => {
         try {
-            const deductIfHint = 20
+            const deductIfHint = 10
             let points = 0
             if (solved >= 0 && solved <= 10)
                 points = 100
@@ -417,7 +419,7 @@ const calaculatePoints = (hintUsed, solved) => {
             if (solved > 20 && solved <= 30)
                 points = 85
             if (solved > 30)
-                points = 80
+                points = 75
             if (hintUsed)
                 points -= deductIfHint
 

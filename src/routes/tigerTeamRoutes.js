@@ -8,6 +8,7 @@ router.post('/create', [tigerTeamAuth, quesValidator], (req, res) => {
     quesControl.createQuestion({
         name: req.body.name,
         url: req.body.url,
+        title: req.body.title,
         description: req.body.description,
         hint: req.body.hint,
         flag: req.body.flag,
