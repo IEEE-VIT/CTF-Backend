@@ -380,6 +380,7 @@ const getLeaderboard = () => {
             snapshot.forEach(doc => {
                 var obj = doc.data();
                 var leaderboard = {
+                    uid: obj.uid,
                     points: obj.points,
                     userName: obj.userName,
                     questionAnswered: obj.qAnswered

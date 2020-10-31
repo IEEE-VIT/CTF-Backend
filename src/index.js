@@ -12,7 +12,7 @@ dotenv.config();
 //Added rate limiter config
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000,
-    max: 24
+    max: 50
 });
 app.use(limiter);
 app.use(helmet());
