@@ -1,6 +1,7 @@
 node_modules
 .env
 playground.js
+playground1.js
 routes.http
 test.env
 coverage

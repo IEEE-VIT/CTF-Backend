@@ -387,7 +387,6 @@ const getLeaderboard = () => {
                 }
                 data.push(leaderboard);
             });
-            console.log(data)
             resolve({
                 statusCode: 200,
                 payload: {
