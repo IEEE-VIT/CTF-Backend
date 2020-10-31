@@ -76,6 +76,14 @@ const checkUserObject = (uid, resp) => {
                             responce: resp
                         }
                     })
+                } else {
+                    resolve({
+                        statusCode: 400,
+                        payload: {
+                            msg: "User doesn't exist",
+                            responce: resp
+                        }
+                    })
                 }
             })
             .catch((err) => {
@@ -329,6 +337,14 @@ const showProfile = (user) => {
                                 })
                             })
                     });
+                } else {
+                    console.log("entered else")
+                    resolve({
+                        statusCode: 200,
+                        payload: {
+                            msg: "Profile not ready to be displayed"
+                        }
+                    })
                 }
             }).catch((err) => {
                 console.log(chalk.red("Error in fetching user details!"));
