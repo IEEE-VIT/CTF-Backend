@@ -31,15 +31,15 @@ app.use((req, res, next) => {
     next();
 })
 
-app.get('/', (req, res) => {
-    res.send({
-        statusCode: 200,
-        payload: {
-            msg: "The Backend is healthy and running",
-            ci: "CI Test successfull"
-        },
-    }).status(200)
-})
+// app.get('/', (req, res) => {
+//     res.send({
+//         statusCode: 200,
+//         payload: {
+//             msg: "The Backend is healthy and running",
+//             ci: "CI Test successfull"
+//         },
+//     }).status(200)
+// })
 
 //Route imports
 const userRoute = require('./routes/userRoutes');
@@ -47,8 +47,8 @@ const questionRoute = require('./routes/tigerTeamRoutes');
 const ctfTimeRoute = require('./routes/ctfTimeRoutes');
 
 //Use Routes
-app.use('/user', userRoute);
-app.use('/tigerTeam', questionRoute);
-app.use('/ctfTime', ctfTimeRoute);
+// app.use('/user', userRoute);
+// app.use('/tigerTeam', questionRoute);
+// app.use('/ctfTime', ctfTimeRoute);
 
 module.exports = app
