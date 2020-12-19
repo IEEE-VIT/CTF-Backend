@@ -48,7 +48,7 @@ const ctfTimeRoute = require('./routes/ctfTimeRoutes');
 
 //Use Routes
 app.use('/user', userRoute);
-// app.use('/tigerTeam', questionRoute);
-// app.use('/ctfTime', ctfTimeRoute);
+app.use('/tigerTeam', questionRoute);
+app.use('/ctfTime', ctfTimeRoute);
 
 module.exports = app
