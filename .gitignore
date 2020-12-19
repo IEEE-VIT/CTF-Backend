@@ -7,3 +7,4 @@ routes.http
 test.env
 coverage
 app.yaml
+.gcloudignore
