@@ -11,4 +11,17 @@ It was held from 31st October - 2nd November, 2020
 
 You can check out the website [here](https://ctf.ieeevit.org/).
 
+## Tools and technology used
+* Node.js
+* Firebase (Firestore database)
+* GCP
+* Travis-CI
+* Heroku
+
+## Contributors
+
+* Ziyan Karmali (<a href="https://github.com/ZiyanK">@ZiyanK</a>)
+* Divyansh Khandelwal (<a href="https://github.com/noob-master147">@noob-master147</a>)
+* Yuvraj Singh (<a href="https://github.com/iamuv2000">@iamuv2000</a>)
+
 Made with ❤ by IEEE-VIT
