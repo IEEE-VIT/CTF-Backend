@@ -1,4 +1,4 @@
-# IEEE CTF Backend 2020
+<h1 align="center"> IEEE CTF Backend 2020</h1>
 
 The backend for this project was made in Node.js
 The database used was firebase
@@ -24,4 +24,6 @@ You can check out the website [here](https://ctf.ieeevit.org/).
 * Divyansh Khandelwal (<a href="https://github.com/noob-master147">@noob-master147</a>)
 * Yuvraj Singh (<a href="https://github.com/iamuv2000">@iamuv2000</a>)
 
-Made with ❤ by IEEE-VIT
+<br />
+
+<p align="center">Made with ❤ by IEEE-VIT</p>
