@@ -15,7 +15,7 @@ The challenges belong to the following categories:
 
 You can check out the website [here](https://ctf.ieeevit.org/).
 
-## Tools and technology used
+## Tools and Technologies Used
 * Node.js
 * Firebase (Firestore database)
 * GCP
