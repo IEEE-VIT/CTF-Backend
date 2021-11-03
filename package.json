@@ -26,7 +26,7 @@
     "nodemon": "^2.0.2",
     "recaptcha-verify": "^0.1.1",
     "uniqid": "^5.2.0",
-    "validator": "^12.2.0"
+    "validator": "^13.7.0"
   },
   "repository": {
     "type": "git",
